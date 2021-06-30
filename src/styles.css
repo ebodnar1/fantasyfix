@@ -1,0 +1,63 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.my-container{
+    border: 2px solid red;
+}
+.my-row{
+    border: 2px dotted blueviolet;
+}
+.my-col{
+    border: 2px groove chartreuse;
+}
+h1{
+    font-size: 40px !important;
+    font-weight: 400;
+}
+p{
+    font-size: 20px;
+    font-weight: 100;
+}
+h2{
+    font-size: 30px !important;
+    font-weight: 400;
+}
+h3{
+	font-size: 25px !important;
+	font-weight: 400;
+}
+html{
+    background-color: blanchedalmond;
+}
+.darken{
+    background-color: #2C3531;
+    color: antiquewhite;
+}
+form.contact {
+	display: flex;
+	flex-direction: column;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 30px;
+    font-size: 17.5px;
+}
+input,
+button {
+	margin-bottom: 10px;
+}
+button {
+	margin-top: 10px;
+	background-color: transparent;
+	color: antiquewhite;
+	border: 1px solid antiquewhite;
+	padding: 4px 16px;
+	transition: 0.4s;
+	width: 100%;
+	margin-top: 10px;
+}
+button:hover:enabled{
+	color: black;
+	background-color: antiquewhite;
+}

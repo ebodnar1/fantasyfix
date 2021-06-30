@@ -1,0 +1,56 @@
+.head{
+    background-color: #2C3531;
+    padding: 3vmin 0 3vmin 0;
+    width: 100%;
+    color: blanchedalmond;
+    font-family: "Open Sans", Roboto, "Helvetica Neue", sans-serif;
+}
+.button{
+    font-size: 3vmin;
+    padding: 0 0 0 4vmin;
+    display: inline-block;
+}
+.button-small{
+    width: 16vmin;
+    font-size: 2.3vmin;
+    display: inline-block;
+}
+.link{
+    color: #cecece;
+    text-decoration: dotted underline;
+}
+.main{
+    font-family: "Catamaran", Roboto, "Helvetica Neue", sans-serif;
+}
+.navbar-nav > li > a:hover, .navbar-nav > li > a:focus {
+    color: #557A95;
+    text-decoration: underline solid #557A95;
+}
+.navbar > a:hover, .navbar > a:focus {
+    color: #557A95;
+    text-decoration: underline solid #557A95;
+}
+.head a{
+    color: white;
+}
+nav ul {
+    margin : 0;
+    padding : 0;
+    list-style: none;
+}
+  
+nav li {
+    display: inline-block;
+    margin-left: 20px;
+    padding-top: 0px;
+    position: relative;
+}
+nav a{
+    padding-left: 20px;
+}
+.navbar-nav .current, .navbar .current{
+    color: blanchedalmond;
+}
+.foot{
+    background-color: blanchedalmond;
+}

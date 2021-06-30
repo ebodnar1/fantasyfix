@@ -1,0 +1,311 @@
+<html>
+    <br>
+    <br>
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-md-9 col-sm-11 text-center">
+                <h1>
+                    Fantasy Fix
+                </h1>
+                <p>Rank your fantasy baseball league's team's every week with Fantasy Fix (currently only supports head-to-head category ESPN leagues).
+                    Input your public league's ID and the year you want to view below to get the results. Can't find your league's ID? Click here to see where
+                    you can find it.
+                </p>
+            </div>
+        </div>
+        <hr>
+        <div class="row justify-content-center darken">
+            <div class="col-9 text-center">
+                <h2>
+                    <br>
+                    League Information
+                </h2>
+            </div>
+        </div>
+        <div class="row justify-content-center darken">
+            <div class="col-md-8 col-sm-10 text-center">
+                <form class="contact" [formGroup]="form" method="post" (ngSubmit)="onSubmit()">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8 col-md-10 col-sm-12">
+                            <mat-form-field style="width: 100%;" class='con'>
+                                <mat-label>League ID</mat-label>
+                                 <input matInput [formControl]="id" required>
+                                <mat-error *ngIf="id.invalid" style="font-family: 'Open Sans';">Please enter a valid ID</mat-error>
+                            </mat-form-field>
+                            <mat-form-field style="width: 100%;" class='con'>
+                                <mat-label>Year</mat-label>
+                                <input matInput [formControl]="year" required>
+                                <mat-error *ngIf="year.invalid" style="font-family: 'Open Sans';">Please enter a year between 2017 and 2021</mat-error>
+                            </mat-form-field>
+                            <!--
+                            <mat-form-field>
+                                <mat-label>swid (if private)</mat-label>
+                                <input matInput [formControl]='swid'>
+                            </mat-form-field>
+                            <mat-form-field>
+                                <mat-label>espn_s2 (if private)</mat-label>
+                                <input matInput [formControl]='espn_s2'>
+                            </mat-form-field>
+                            -->
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-lg-3 col-md-4 col-sm-6 align-self-center">
+                            <button class="submit text-center" type="submit" >Submit</button>
+                        </div>
+                    </div>
+                </form>
+                <br>
+            </div>
+        </div>
+
+        <div class="row justify-content-center darken" *ngIf='filled'>
+            <div class="col-md-2 col-sm-10 text-center">
+                <mat-form-field appearance='fill'>
+                    <mat-label>Week</mat-label>
+                    <mat-select [formControl]='allWeeks' (selectionChange)='onSelectClick($event)' [(value)]='currentWeek'>
+                        <mat-option *ngFor='let week of allWeeks' [value]='week'>{{week + 1}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- DOESN'T WORK ACCURATELY - WON'T INCLUDE
+    <div class="container-fluid darken" *ngIf='weekPlayed'>
+        <div class="row justify-content-center">
+            <div class="col text-center align-self-center">
+                <table mat-table [dataSource]="dataSource" class='small-table'>
+                    <ng-container matColumnDef='team'>
+                        <th mat-header-cell *matHeaderCellDef>Team</th>
+                        <td mat-cell *matCellDef="let t"> {{t.team}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='wins'>
+                        <th mat-header-cell *matHeaderCellDef>Wins</th>
+                        <td mat-cell *matCellDef="let t"> {{t.wins}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='losses'>
+                        <th mat-header-cell *matHeaderCellDef>Losses</th>
+                        <td mat-cell *matCellDef="let t"> {{t.losses}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='ties'>
+                        <th mat-header-cell *matHeaderCellDef>Ties</th>
+                        <td mat-cell *matCellDef="let t"> {{t.ties}} </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef='displayedColumns'></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <br>
+    -->
+
+    <!-- BULK STATS: DO NOT DISPLAY 
+    <div class="container-fluid darken" *ngIf='weekPlayed'>
+        <div class="row justify-content-center">
+            <div class="col text-center align-self-center">
+                <table mat-table [dataSource]="accumulatedWeekScores">
+                    <ng-container matColumnDef='TeamID'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>ID</th>
+                        <td mat-cell *matCellDef="let t"> {{t.TeamID}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='R'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Runs</th>
+                        <td mat-cell *matCellDef="let t"> {{t.R}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='RBI'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>RBIs</th>
+                        <td mat-cell *matCellDef="let t"> {{t.RBI}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='HR'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>HRs</th>
+                        <td mat-cell *matCellDef="let t"> {{t.HR}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='H'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Hits</th>
+                        <td mat-cell *matCellDef="let t"> {{t.H}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='AB'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>ABs</th>
+                        <td mat-cell *matCellDef="let t"> {{t.AB}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='SB'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>SBs</th>
+                        <td mat-cell *matCellDef="let t"> {{t.SB}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef='O'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>IP</th>
+                        <td mat-cell *matCellDef="let t"> {{t.O}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='BBA'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>BBs</th>
+                        <td mat-cell *matCellDef="let t"> {{t.BBA}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='HA'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>HA</th>
+                        <td mat-cell *matCellDef="let t"> {{t.HA}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='ER'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>ERs</th>
+                        <td mat-cell *matCellDef="let t"> {{t.ER}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='K'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Ks</th>
+                        <td mat-cell *matCellDef="let t"> {{t.K}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='W'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Ws</th>
+                        <td mat-cell *matCellDef="let t"> {{t.W}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='SV'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>SVs</th>
+                        <td mat-cell *matCellDef="let t"> {{t.SV}} </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef='displayedToday'></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedToday;"></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <br>
+    -->
+
+    <div class="container-fluid darken" *ngIf='weekPlayed'>
+        <br>
+        <div class="row justify-content-center">
+            <div class="col text-center align-self-center">
+                <h3>Scoreboard</h3>
+                <table mat-table [dataSource]="displayWeekScores">
+                    <ng-container matColumnDef='TeamID'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>ID</th>
+                        <td mat-cell *matCellDef="let t"> {{t.TeamID}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='R'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Runs</th>
+                        <td mat-cell *matCellDef="let t"> {{t.R}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='RBI'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>RBIs</th>
+                        <td mat-cell *matCellDef="let t"> {{t.RBI}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='HR'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>HRs</th>
+                        <td mat-cell *matCellDef="let t"> {{t.HR}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='BA'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>BA</th>
+                        <td mat-cell *matCellDef="let t"> {{t.BA}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='SB'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>SBs</th>
+                        <td mat-cell *matCellDef="let t"> {{t.SB}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef='WHIP'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>WHIP</th>
+                        <td mat-cell *matCellDef="let t"> {{t.WHIP}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='ERA'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>ERA</th>
+                        <td mat-cell *matCellDef="let t"> {{t.ERA}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='K'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Ks</th>
+                        <td mat-cell *matCellDef="let t"> {{t.K}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='W'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Ws</th>
+                        <td mat-cell *matCellDef="let t"> {{t.W}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='SV'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>SVs</th>
+                        <td mat-cell *matCellDef="let t"> {{t.SV}} </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef='condensed'></tr>
+                    <tr mat-row *matRowDef="let row; columns: condensed;"></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container-fluid darken" *ngIf='weekPlayed'>
+        <br>
+        <br>
+        <div class="row justify-content-center">
+            <div class="col text-center align-self-center">
+                <h3>Points</h3>
+                <table mat-table [dataSource]="rankedDisplay">
+                    <ng-container matColumnDef='TeamID'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>ID</th>
+                        <td mat-cell *matCellDef="let t"> {{t.TeamID}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='R'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Runs</th>
+                        <td mat-cell *matCellDef="let t"> {{t.R}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='RBI'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>RBIs</th>
+                        <td mat-cell *matCellDef="let t"> {{t.RBI}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='HR'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>HRs</th>
+                        <td mat-cell *matCellDef="let t"> {{t.HR}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='BA'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>BA</th>
+                        <td mat-cell *matCellDef="let t"> {{t.BA}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='SB'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>SBs</th>
+                        <td mat-cell *matCellDef="let t"> {{t.SB}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef='WHIP'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>WHIP</th>
+                        <td mat-cell *matCellDef="let t"> {{t.WHIP}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='ERA'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>ERA</th>
+                        <td mat-cell *matCellDef="let t"> {{t.ERA}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='K'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Ks</th>
+                        <td mat-cell *matCellDef="let t"> {{t.K}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='W'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Ws</th>
+                        <td mat-cell *matCellDef="let t"> {{t.W}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='SV'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>SVs</th>
+                        <td mat-cell *matCellDef="let t"> {{t.SV}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='Total'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Total</th>
+                        <td mat-cell *matCellDef="let t"> {{t.Total}} </td>
+                    </ng-container>
+
+                    <!--This will allow me to hardcode every possible category, even if it is not to be displayed! yay!-->
+                    <ng-container matColumnDef='Test'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Test</th>
+                        <td mat-cell *matCellDef='let t'>{{t.Test}}</td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef='pointsColumns'></tr>
+                    <tr mat-row *matRowDef="let row; columns: pointsColumns;"></tr>
+                </table>
+            </div>
+        </div>
+        <br>
+    </div>
+    <div class="container-fluid darken" *ngIf='!weekPlayed'>
+        <div class="row large-row"></div>
+    </div>
+</html>
