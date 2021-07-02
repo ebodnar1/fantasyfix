@@ -37,11 +37,13 @@ import {MatSortModule} from '@angular/material/sort';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { HomeComponent } from './home/home.component';
 import { HttpClientModule} from '@angular/common/http';
+import { TeamComponent } from './team/team.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
+    TeamComponent
   ],
   imports: [
     BrowserModule,

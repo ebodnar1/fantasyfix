@@ -186,6 +186,7 @@ export class HomeComponent implements OnInit {
 	public selectedWeek: number = 0;
 	//Stores team abbreviations and IDs in a dictionary of the form {key (abbreviation): value (team ID)}
 	public teamIDs = {};
+	public fullTeamNames = {};
 
 	public accumulatedWeekScores = [];
 	public displayWeekScores = [];
@@ -245,6 +246,10 @@ export class HomeComponent implements OnInit {
 				this.thisWeeksScores.push({team: this.teamIDs[this.teamsForGames[i]], wins: scores[i]['wins'], 
 				losses: scores[i]['losses'], ties: scores[i]['ties']});
 			}
+		}
+
+		for(let i = 0; i < this.numTeams; i++){
+			this.fullTeamNames[this.scoreboardItems['teams'][i]['id']] = this.scoreboardItems['teams'][i]['location'] + " " + this.scoreboardItems['teams'][i]['nickname'];
 		}
 
 		if(this.currentSelected){
@@ -392,14 +397,13 @@ export class HomeComponent implements OnInit {
 				}
 			});
 
-			//If games have begun, push each player's stays into the boxScore array
+			//If games have begun, push each player's stats and lineupSlotId into the boxScore array
 			matchupSchedule[i].map(data => {
 				if(data["playerPoolEntry"]['player']['stats'][0] != null){
-					boxScore.push(data["playerPoolEntry"]['player']['stats'][0]['stats'])
+					boxScore.push(data["playerPoolEntry"]['player']['stats'][0]['stats']);
+					bench.push(data['lineupSlotId']);
 				}
 			});
-			//Get the lineupSlot of each player
-			matchupSchedule[i].map(data => bench.push(data['lineupSlotId']))
 
 			//Define teamTracker dictionary list and fill all categories with 0's
 			let teamTracker = [{}];

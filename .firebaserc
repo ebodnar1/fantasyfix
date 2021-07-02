@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "fantasyfix"
+  },
+  "targets": {
+    "fantasyfix": {
+      "hosting": {
+        "fantasy-application": [
+          "fantasyfix"
+        ]
+      }
+    }
+  }
+}
