@@ -1,0 +1,78 @@
+table{
+    width: 100%;
+    text-align: center !important;
+    background-color: #2C3531;
+    border: 0.3px solid currentColor;
+}
+.small-table{
+    width: 50%;
+    justify-content: center;
+    text-align: center !important;
+}
+mat-header-cell, mat-cell, mat-header-row{
+    justify-content: center;
+    text-align: center;
+}
+.mat-column-TeamID{
+    border-right: 1px solid currentColor;
+    background-color: #5D5C61;
+    border-bottom: 0.75px solid currentColor;
+}
+mat-cell{
+    font-size: 200px;
+}
+.mat-column-Total{
+    border-left: 0.1px dashed currentColor;
+}
+mat-label{
+   visibility: visible;
+}
+::ng-deep th.mat-header-cell{
+    width: 100px; 
+    background-color: #5D5C61;
+    border-left: 0.05px solid white;
+    border-bottom: 1px solid white;
+    font-size:  15px;
+    font-weight: bold;
+    color: white;
+}
+::ng-deep td.mat-cell{
+    background-color: #2C3531;
+    border-left: 0.05px solid #5D5C61;
+    border-bottom: 0.05px solid #5D5C61;
+    font-size: 12px;
+    color: white;
+}
+@media screen and (min-width: 350px){
+    ::ng-deep th.mat-header-cell{
+        font-size: 10px;
+    }
+    ::ng-deep td.mat-cell{
+        font-size: 8px;
+    }
+}
+
+@media screen and (min-width: 600px){
+    ::ng-deep th.mat-header-cell{
+        font-size: 12px;
+    }
+    ::ng-deep td.mat-cell{
+        font-size: 10px;
+    }
+}
+@media screen and (min-width: 1200px){
+    ::ng-deep th.mat-header-cell{
+        font-size: 17px;
+    }
+    ::ng-deep td.mat-cell{
+        font-size: 14px;
+    }
+}
+.large-row{
+    height: 440px;
+}
+.submit{
+    background-color: #2C3531;
+    color: blanchedalmond;
+    border-color: #2C3531;
+}

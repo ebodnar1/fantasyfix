@@ -1,1 +1,83 @@
-<p>team works!</p>
+<html>
+    <br><br>
+    <h1 class='text-center'>My Team</h1>
+    <p class='text-center'>Please fill out your League ID and the Year on the homepage</p>
+    <br>
+
+    <div class="container-fluid" *ngIf='filled'>
+        <div class="row justify-content-center">
+            <div class="col-md-2 col-sm-10 text-center">
+                <mat-form-field>
+                    <mat-label>Team</mat-label>
+                    <mat-select [formControl]='allTeams' (selectionChange)='onSelectClick($event)' [(value)]="Team">
+                        <mat-option *ngFor='let team of allTeams' [value]='team'>{{team}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container-fluid" *ngIf='chosen'>
+        <br><br>
+        <div class="row justify-content-center">
+            <div class="col text-center align-self-center">
+                <h3>Team Comparison</h3>
+                <table mat-table [dataSource]='teamStats'>
+                    <ng-container matColumnDef='TeamID'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'></th>
+                        <td mat-cell *matCellDef="let t"> {{t.TeamID}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='R'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>R</th>
+                        <td mat-cell *matCellDef="let t"> {{t.R}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='RBI'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>RBI</th>
+                        <td mat-cell *matCellDef="let t"> {{t.RBI}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='HR'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>HR</th>
+                        <td mat-cell *matCellDef="let t"> {{t.HR}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='BA'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>BA</th>
+                        <td mat-cell *matCellDef="let t"> {{t.BA}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='SB'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>SB</th>
+                        <td mat-cell *matCellDef="let t"> {{t.SB}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef='WHIP'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>WHIP</th>
+                        <td mat-cell *matCellDef="let t"> {{t.WHIP}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='ERA'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>ERA</th>
+                        <td mat-cell *matCellDef="let t"> {{t.ERA}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='K'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>K</th>
+                        <td mat-cell *matCellDef="let t"> {{t.K}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='W'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>W</th>
+                        <td mat-cell *matCellDef="let t"> {{t.W}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='SV'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>SV</th>
+                        <td mat-cell *matCellDef="let t"> {{t.SV}} </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef='condensed'></tr>
+                    <tr mat-row *matRowDef="let row; columns: condensed;"></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <p class='text-center'>
+        More coming soon...
+    </p>
+</html>

@@ -38,12 +38,16 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import { HomeComponent } from './home/home.component';
 import { HttpClientModule} from '@angular/common/http';
 import { TeamComponent } from './team/team.component';
+import { LeagueComponent } from './league/league.component';
+import { ContactComponent } from './contact/contact.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    TeamComponent
+    TeamComponent,
+    LeagueComponent,
+    ContactComponent
   ],
   imports: [
     BrowserModule,
