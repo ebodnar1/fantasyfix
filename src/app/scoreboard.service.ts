@@ -122,13 +122,13 @@ export class ScoreboardService {
 		this.trackedCategories = this.getCategories();
 		this.getWeekIds(this.numTeams);
 
-    for(let i = 0; i < this.numTeams; i++){
+    	for(let i = 0; i < this.numTeams; i++){
 			this.fullTeamNames[this.scoreboardItems['teams'][i]['id']] = this.scoreboardItems['teams'][i]['location'] + " " + this.scoreboardItems['teams'][i]['nickname'];
 		}
-    this.scoreboardItems['teams'].map(data => this.teamIDs[data['id']] = data['abbrev']);
+    	this.scoreboardItems['teams'].map(data => this.teamIDs[data['id']] = data['abbrev']);
 	}
 
-	fillData(){
+	fillData(week){
 		//this.disable = true;
 
 		//Clearing arrays
@@ -149,34 +149,33 @@ export class ScoreboardService {
 		this.matchupItems['schedule'].map(data => scores.push(data['home']['cumulativeScore'], data['away']['cumulativeScore']));
 
 		//Get scoresByStat
-		for(let i = 0; i < (this.currentWeek * (this.numTeams / 2)); i++){
+		for(let i = 0; i < (week * (this.numTeams / 2)); i++){
 			this.scoresByStat.push(this.cumulativeScores[i]['scoreByStat']);
 		}
 		//this.cumulativeScores.map(data => console.log(data['scoreByStat']));//this.scoresByStat.push(data['scoreByStat']));
 		this.scoreboardItems['schedule'].map(data => this.teamsForGames.push(data["home"]['teamId'], data["away"]['teamId']))
 
 		if(!this.thisWeeksScores.length){
-			for(let i = (this.selectedWeek) * this.numTeams; i < ((this.selectedWeek + 1) * this.numTeams); i++){
+			for(let i = (this.currentWeek - 1) * this.numTeams; i < ((this.currentWeek) * this.numTeams); i++){
 				this.thisWeeksScores.push({team: this.teamIDs[this.teamsForGames[i]], wins: scores[i]['wins'], 
 				losses: scores[i]['losses'], ties: scores[i]['ties']});
 			}
 		}
 
-		if(this.currentSelected){
+		if(week + 1 == this.currentWeek){
 			this.todaysStats = this.getToday();
 			this.setupTodayTable();
 		}
 
-		this.weekStats = this.getWeekStats();
-		if(this.currentSelected){
+		if(week + 1 == this.currentWeek){
+			this.weekStats = this.getWeekStats(this.weekIds[0], this.weekIds[this.weekIds.length - 1]);
 			this.accumulatedWeekScores = this.getOverallWeekStats(this.todaysStats, this.weekStats);
 		}
-		else{
-			this.accumulatedWeekScores = this.getWeekStats();
+		else if(week < this.currentWeek){
+			this.accumulatedWeekScores = this.getWeekStats(this.weekIds[0], this.weekIds[this.weekIds.length - 1]);
 		}
 
 		this.displayWeekScores = this.fullStatsToDisplay(this.accumulatedWeekScores);
-    console.log(this.displayWeekScores);
 		this.setupCondensedTable();
 
 		let ranked = this.getRankingsEachCategory(this.displayWeekScores);
@@ -186,6 +185,10 @@ export class ScoreboardService {
 
 	getPct(wins, losses, ties){
 		return ((2 * wins + ties) / (2 * losses));
+	}
+
+	setCurrentSelected(truth){
+		this.currentSelected = truth;
 	}
 
 	scoringCategories: Category[] = [];
@@ -231,18 +234,19 @@ export class ScoreboardService {
 
   getWeekSelected(week){
     this.weekIds = [];
-		for(let i = ((week) * (this.numTeams / 2)); i < ((week + 1) * (this.numTeams / 2)); i++){
-			this.weekIds.push(i);
-		}
+	for(let i = ((week) * (this.numTeams / 2)); i < ((week + 1) * (this.numTeams / 2)); i++){
+		this.weekIds.push(i);
+	}
     return this.weekIds;
   }
 
 	onSelectClick(val){
 		this.currentWeek = this.scoreboardItems['status']['currentMatchupPeriod'];
 		this.chosen = true;
-		this.selectedWeek = val.value;
 
-    this.getWeekSelected(this.selectedWeek);
+    	this.selectedWeek = this.convertWeek(val.value);
+
+    	this.getWeekSelected(this.selectedWeek);
 		this.currentSelected = this.compareArrays(this.weekIds, this.currentWeekIds);
 		
 		for(let i of this.weekIds){
@@ -256,9 +260,35 @@ export class ScoreboardService {
 		this.weekPlayed = this.weekPlayed || this.currentSelected;
 
 		if(this.weekPlayed){
-			this.fillData();
+			this.fillData(this.selectedWeek);
 		}
 	}
+
+  convertWeek(value){
+    let selected;
+
+    if(this.isNumber(value)){
+      selected = value;
+    }
+    else{
+      selected = value.substring(0,2).trim();
+    }
+
+	if(selected == this.currentWeek){
+		this.currentSelected = true;
+	}
+	else{
+		this.currentSelected = false;
+	}
+
+	selected = parseInt(selected) - 1;
+	this.selectedWeek = selected;
+    return selected;
+  }
+
+  isNumber(value){
+    return typeof value === 'number' && isFinite(value);
+  }
 
 	compareArrays(a, b){
 		if(a === b) return true;
@@ -278,8 +308,14 @@ export class ScoreboardService {
 			}
 		}
 		if(!this.allWeeks.length){
-			for(let i = 0; i < (teamNum * this.currentWeek / 2); i++){
-				this.allWeeks.push(i);
+      		let maxWeek = this.settingsItems['settings']['scheduleSettings']['matchupPeriodCount'];
+			for(let i = 1; i <= maxWeek; i++){
+        		if(i == this.currentWeek){
+          			this.allWeeks.push((i) + " (current week)")
+        		}
+        		else{
+					  this.allWeeks.push(i);
+        		}
 			}
 		}
 	}
@@ -352,44 +388,47 @@ export class ScoreboardService {
 	}
 
   getStatsForTeam(teamId, week){
-    this.getWeekSelected(week);
-    this.fillData();
-    let temp;
-    for(let i = 0; i < this.numTeams; i++){
-      if(this.displayWeekScores[i]['TeamID'] == this.teamIDs[teamId]){
-        temp = this.displayWeekScores[i];
-      }
-    }
-    return temp;
+	if(week <= this.currentWeek){
+    	this.fillData(week);
+    	let temp;
+    	for(let i = 0; i < this.numTeams; i++){
+      		if(this.displayWeekScores[i]['TeamID'] == this.teamIDs[teamId]){
+        		temp = this.displayWeekScores[i];
+      		}
+    	}
+    	return temp;
+	}
   }
 
   getAverage(week){
-    this.getWeekSelected(week);
-    this.fillData();
-    let temp = {};
-    for(let i of this.scoringCategories){
-      temp[this.categoryNames[i.categoryNum]] = 0;
-    }
-    for(let i of this.scoringCategories){
-      for(let j = 0; j < this.numTeams; j++){
-        temp[this.categoryNames[i.categoryNum]] += this.displayWeekScores[j][this.categoryNames[i.categoryNum]];
-      }
-      //IMPLEMENT WITH OTHER RATIO CATEGORIES
-      if(i.categoryNum == 41 || i.categoryNum == 47 || i.categoryNum == 2){
-        temp[this.categoryNames[i.categoryNum]] = +(temp[this.categoryNames[i.categoryNum]] / this.numTeams).toFixed(3);
-      }
-      else{
-        temp[this.categoryNames[i.categoryNum]] = Math.round(temp[this.categoryNames[i.categoryNum]] / this.numTeams);
-      }
-    }
-    return temp;
+	if(week <= this.currentWeek){
+    	this.getWeekSelected(week);
+    	this.fillData(week);
+    	let temp = {};
+    	for(let i of this.scoringCategories){
+      		temp[this.categoryNames[i.categoryNum]] = 0;
+    	}
+    	for(let i of this.scoringCategories){
+      		for(let j = 0; j < this.numTeams; j++){
+        		temp[this.categoryNames[i.categoryNum]] += this.displayWeekScores[j][this.categoryNames[i.categoryNum]];
+      		}
+      		//IMPLEMENT WITH OTHER RATIO CATEGORIES
+      		if(i.categoryNum == 41 || i.categoryNum == 47 || i.categoryNum == 2){
+        		temp[this.categoryNames[i.categoryNum]] = +(temp[this.categoryNames[i.categoryNum]] / this.numTeams).toFixed(3);
+      		}
+      		else{
+        		temp[this.categoryNames[i.categoryNum]] = Math.round(temp[this.categoryNames[i.categoryNum]] / this.numTeams);
+      		}
+    	}
+    	return temp;
+	}
   }
 
-	getWeekStats(){
+	getWeekStats(start, end){
 		let weekStats = [];
 		let teamScores = [];
 		let tempIds = [];
-		for(let i = this.weekIds[0]; i <= this.weekIds[this.weekIds.length - 1]; i++){
+		for(let i = start; i <= end; i++){
 			teamScores.push(this.scoreboardItems['schedule'][i]['home']['cumulativeScore']['scoreByStat'], this.scoreboardItems['schedule'][i]['away']['cumulativeScore']['scoreByStat']);
 			tempIds.push(this.matchupItems['schedule'][i]['home']['teamId'], this.matchupItems['schedule'][i]['away']['teamId']);
 		}
@@ -543,6 +582,120 @@ export class ScoreboardService {
 
 		return changed;
 	}
+
+  getPieChartData(week, playerID){
+    this.getWeekSelected(week);
+	if(week < this.currentWeek){
+    	this.fillData(week);
+	}
+
+    let temp = [];
+    let stats;
+
+    for(let i = 0; i < this.numTeams; i++){
+      if(this.rankedDisplay[i]['TeamID'] == this.teamIDs[playerID]){
+        stats = this.rankedDisplay[i];
+      }
+    }
+
+    let keys = Object.keys(stats);
+    for(let i = 1; i < keys.length - 1; i++){
+      let s = {};
+      s['name'] = keys[i];
+      s['value'] = stats[keys[i]]
+      temp.push(s);
+    }
+
+    return temp;
+  }
+
+	getAverageByCategory(categoryName){
+		let list = [];
+		let rawScores = this.fullStatsToDisplay(this.getWeekStats(0, (((this.numTeams / 2) * (this.currentWeek - 1)) - 1)));
+		let allScores = {};
+		for(let i = 0; i < this.currentWeek - 1; i++){
+			let temp = [];
+			for(let j = 0; j < this.numTeams; j++){
+				temp.push(rawScores[0]);
+				rawScores.shift();
+			}
+			allScores[i] = temp;
+		}
+  
+		for(let i = 0; i < this.currentWeek - 1; i++){
+			let l = {}
+			l['name'] = "Week " + (i + 1);
+			let sum = 0;
+			for(let j = 0; j < this.numTeams; j++){
+				sum += allScores[i][j][categoryName];
+			}
+			if(categoryName == 'ERA' || categoryName == 'WHIP' || categoryName == 'BA'){
+				l['value'] = +(sum / this.numTeams).toFixed(3);
+			}
+			else{
+				l['value'] = +(sum / this.numTeams).toFixed(0);
+			}
+			list.push(l);
+		}
+  
+		let formatted = {};
+		formatted['name'] = 'League Average';
+		formatted['series'] = list;
+  
+		return formatted;
+	}
+
+  getStatsByCategory(categoryName, teamId){
+	  let list = [];
+	  let rawScores = this.fullStatsToDisplay(this.getWeekStats(0, (((this.numTeams / 2) * (this.currentWeek - 1)) - 1)));
+	  let allScores = {};
+	  
+	  for(let i = 0; i < this.currentWeek - 1; i++){
+		  let temp = [];
+		  for(let j = 0; j < this.numTeams; j++){
+			  temp.push(rawScores[0]);
+			  rawScores.shift();
+		  }
+		  allScores[i] = temp;
+	  }
+
+	  let oppList: any[] = [];
+	  for(let i = 0; i < this.currentWeek - 1; i++){
+		  let oppId: string;
+		  let l = {}
+		  let o ={};
+
+		  l['name'] = "Week " + (i + 1);
+		  o['name'] = 'Week ' + (i + 1);
+		  for(let j = 0; j < this.numTeams; j++){
+			  if(allScores[i][j]['TeamID'] == this.teamIDs[teamId]){
+				  let oppIndex = 0;
+				  if(j % 2 == 0){
+					oppIndex = j + 1;
+				  }
+				  else{
+					  oppIndex = j - 1;
+				  }
+				  l['value'] = allScores[i][j][categoryName];
+				  o['value'] = allScores[i][oppIndex][categoryName];
+			  }
+		  }
+		  list.push(l);
+		  oppList.push(o);
+	  }
+
+	  let formatted = {};
+	  formatted['name'] = this.fullTeamNames[teamId];
+	  formatted['series'] = list;
+	  
+	  let res = [formatted];
+	  let oppForm = {};
+	  oppForm['name'] = "Opponent";
+	  oppForm['series'] = oppList;
+	  res.push(oppForm);
+
+	  return res;
+  }
 
 	rank(arr, category){
 		var sorted = arr.slice().sort(function(a,b){return b-a});

@@ -1,15 +1,18 @@
 <html>
     <br><br>
     <h1 class='text-center'>My Team</h1>
-    <p class='text-center'>Please fill out your League ID and the Year on the homepage</p>
+    <hr>
+    <p class='text-center' *ngIf='!filled'>Please fill out your League ID and the Year on the homepage</p>
     <br>
 
     <div class="container-fluid" *ngIf='filled'>
         <div class="row justify-content-center">
             <div class="col-md-2 col-sm-10 text-center">
-                <mat-form-field>
+                <p class='text-center'>Select a team</p>
+                <mat-form-field appearance='fill'>
+                    <!--FIX THIS LABEL-->
                     <mat-label>Team</mat-label>
-                    <mat-select [formControl]='allTeams' (selectionChange)='onSelectClick($event)' [(value)]="Team">
+                    <mat-select [formControl]='allTeams' (selectionChange)='onSelectClick($event)' placeholder="Team">
                         <mat-option *ngFor='let team of allTeams' [value]='team'>{{team}}</mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -17,7 +20,7 @@
         </div>
     </div>
     
-    <div class="container-fluid" *ngIf='chosen'>
+    <div class="container-fluid" *ngIf='showPieChart'>
         <br><br>
         <div class="row justify-content-center">
             <div class="col text-center align-self-center">
@@ -74,10 +77,84 @@
                 </table>
             </div>
         </div>
+
+        <br>
     </div>
 
-    <br>
-    <p class='text-center'>
-        More coming soon...
-    </p>
+    <div class="container-fluid" *ngIf='chosen'>
+        <hr>
+        <br>
+        <h3 class='text-center'>Points visualized</h3>
+        <p class='text-center'>Choose a week to view a breakdown of your team's points</p>
+        <div class="row justify-content-center">
+            <div class="col-md-2 col-sm-10 text-center align-self-center">
+                <mat-form-field appearance='fill'>
+                    <!--FIX THIS LABEL-->
+                    <mat-label>Week</mat-label>
+                    <mat-select [formControl]='weeks' (selectionChange)='onWeekClick($event)'>
+                        <mat-option *ngFor='let week of weeks' [value]='week'>{{week}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid" *ngIf='showError'>
+        <div class="row justify-content-center">
+            <div class="col text-center">
+                <p>This week has not been played yet!</p>
+            </div>
+        </div>
+    </div>
+
+   <div class="container-fluid">
+       <div class="row justify-content-center">
+            <div class="col-md-6 col-sm-9 text-center pi-chart" *ngIf='showPieChart'>
+                <ngx-charts-pie-chart class='text-center' [scheme]='colorScheme' [results]='pieChartData' [gradient]='gradient' [legend]='showLegend' [legendPosition]='legendPosition' [labels]='showLabels' [doughnut]='isDoughnut'>
+
+                </ngx-charts-pie-chart>
+            </div>
+       </div>
+   </div>
+
+    <div class="container-fluid" *ngIf='showPieChart'>
+        <div class="row justify-content-center">
+            
+        </div>
+    </div>
+
+    <div class="container-fluid" *ngIf='showPieChart'>
+        <hr>
+        <br>
+        <h3 class='text-center'>Trends</h3>
+        <p class="text-center">Choose a category to view your team's performance over time</p>
+        <div class="row justify-content-center">
+            <div class="col-lg-2 col-md-6 text-center align-self-center">
+                <mat-form-field appearance='fill'>
+                    <mat-label>Category</mat-label>
+                    <mat-select [formControl]='categoryNames' (selectionChange)='onCategoryClick($event)'>
+                        <mat-option *ngFor='let cat of categoryNames' [value]='cat'>{{cat}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-lg-9 col-md-10 text-center" style='height: 420px;' *ngIf='showLineChart'>
+                <ngx-charts-line-chart
+                [scheme]='lineScheme'
+                [legend]='lineLegend'
+                [showXAxisLabel]='showXAxisLabel'
+                [showYAxisLabel]='showYAxisLabel'
+                [xAxis]='xAxis'
+                [yAxis]='yAxis'
+                [xAxisLabel]='xAxisLabel'
+                [results]='lineChartData'
+                [legendPosition]='lineLegendPosition'
+                [autoScale]='lineAutoscale'>
+
+                </ngx-charts-line-chart>
+            </div>
+        </div>
+        <br>
+    </div>
+
+    <br><br>
 </html>

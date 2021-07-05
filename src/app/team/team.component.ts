@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import {ScoreboardService} from '../scoreboard.service';
 import { MatTable } from '@angular/material/table';
 
@@ -18,13 +18,62 @@ export class TeamComponent implements OnInit {
   public chosen: boolean = false;
   public teamStats = [];
   public condensed;
+  public weeks;
+  public currentWeek;
+  public selectedWeek;
+  public pieChartData;
+  public showPieChart: boolean = false;
+  public showError: boolean = false;
+  public categoryNames = [];
+  public lineChartData;
+  public showLineChart: boolean = false;
+
+  //Pie chart configuration
+  gradient: boolean = true;
+  showLegend: boolean = false;
+  showLabels: boolean = true;
+  isDoughnut: boolean = false;
+  legendPosition: string = 'right';
+  view: any[] = [500, 500];
+  single: any[];
+  chosenCategory: string;
+
+  //Line chart configuration
+  lineLegend: boolean = true;
+  showLineLabels: boolean = true;
+  animations: boolean = true;
+  xAxis: boolean = true;
+  yAxis: boolean = true;
+  showXAxisLabel: boolean = true;
+  showYAxisLabel: boolean = true;
+  xAxisLabel: string = 'Week';
+  yAxisLabel: string = 'Number';
+  lineLegendPosition: string = 'right';
+  lineAutoscale: boolean = true;
+
+
+  colorScheme = {
+    domain: ['#989EE7', '#1C9C5A', '#368290', '#5D0FBC', '#8348BD', '#D2F4E2', '#333953', '#BFB5DE']
+  };
+
+  lineScheme = {
+    domain: ['#5D0FBC', '#1C9C5A', '#21C6FC']
+  };
 
   ngOnInit(): void {
+    this.selectedWeek = this.scoreboard.currentWeek;
     this.allTeams = this.listTeamNames();
     this.filled = this.scoreboard.filled;
-    console.log(this.allTeams);
-    console.log(this.scoreboard.fullTeamNames);
-    if(this.scoreboard.rankedDisplay.length){
+    this.weeks = this.scoreboard.allWeeks;
+    this.currentWeek = this.scoreboard.currentWeek;
+    this.selectedWeek = this.currentWeek;
+    this.scoreboard.setCurrentSelected(false);
+
+    for(let i = 0; i < this.scoreboard.scoringCategories.length; i++){
+      this.categoryNames[i] = this.scoreboard.categoryNames[this.scoreboard.scoringCategories[i].categoryNum];
+    }
+
+    if(this.allTeams.length){
       console.log("GOOD");
     }
     else{
@@ -42,11 +91,59 @@ export class TeamComponent implements OnInit {
     }
     this.chosen = true;
     this.condensed = this.scoreboard.condensed;
-    this.teamStats.push(this.scoreboard.getStatsForTeam(this.selected, 12));
-    let avg = this.scoreboard.getAverage(12);
-    avg['TeamID'] = 'AVG'
+    this.scoreboard.getWeekSelected(this.selectedWeek);
+    this.teamStats.push(this.scoreboard.getStatsForTeam(this.selected, (this.selectedWeek)));
+    let avg = this.scoreboard.getAverage(this.selectedWeek);
+    avg['TeamID'] = 'AVG';
     this.teamStats.push(avg);
+    //this.scoreboard.onSelectClick(val);
+
+    this.updatePieChart(this.selectedWeek, this.selected)
+    this.updateLineChart(this.chosenCategory);
     this.table.renderRows();
+  }
+
+  onWeekClick(val){
+    this.teamStats.length = 0;
+    this.selectedWeek = this.scoreboard.convertWeek(val.value);
+    this.scoreboard.currentSelected = this.currentWeek == this.selectedWeek + 1;
+    this.scoreboard.getWeekSelected(this.selectedWeek);
+
+    if(this.selectedWeek < this.currentWeek){
+      this.teamStats.push(this.scoreboard.getStatsForTeam(this.selected, this.selectedWeek));
+      let avg = this.scoreboard.getAverage(this.selectedWeek);
+      avg['TeamID'] = 'AVG';
+      this.teamStats.push(avg);
+      this.showPieChart = true;
+      this.showError = false;
+    }
+    else{
+      this.showPieChart = false;
+      this.showError = true;
+    }
+
+    this.updatePieChart(this.selectedWeek, this.selected);
+    if(this.showPieChart){
+      this.table.renderRows();
+    }
+  }
+
+  onCategoryClick(val){
+    this.showLineChart = true;
+    this.chosenCategory = "";
+    this.chosenCategory = val.value;
+    this.updateLineChart(this.chosenCategory);
+  }
+
+  updatePieChart(week, player){
+    if(week < this.currentWeek){
+      this.pieChartData = this.scoreboard.getPieChartData(week, player);
+    }
+  }
+
+  updateLineChart(cat){
+    this.lineChartData = this.scoreboard.getStatsByCategory(cat, this.selected);
+    this.lineChartData.push(this.scoreboard.getAverageByCategory(cat));
   }
 
   listTeamNames(){

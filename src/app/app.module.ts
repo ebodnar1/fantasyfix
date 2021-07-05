@@ -40,6 +40,7 @@ import { HttpClientModule} from '@angular/common/http';
 import { TeamComponent } from './team/team.component';
 import { LeagueComponent } from './league/league.component';
 import { ContactComponent } from './contact/contact.component';
+import {NgxChartsModule} from '@swimlane/ngx-charts';
 
 @NgModule({
   declarations: [
@@ -87,7 +88,8 @@ import { ContactComponent } from './contact/contact.component';
     HttpClientModule,
     HttpClientModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    NgxChartsModule
   ],
   exports:[
     MatFormFieldModule,

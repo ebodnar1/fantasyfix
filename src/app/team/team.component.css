@@ -25,7 +25,8 @@ mat-cell{
     border-left: 0.1px dashed currentColor;
 }
 mat-label{
-   visibility: visible;
+   visibility:visible;
+   overflow: hidden;
 }
 ::ng-deep th.mat-header-cell{
     width: 100px; 
@@ -75,4 +76,7 @@ mat-label{
     background-color: #2C3531;
     color: blanchedalmond;
     border-color: #2C3531;
+}
+.pi-chart{
+    height: 400px;
 }

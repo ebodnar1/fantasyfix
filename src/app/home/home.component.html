@@ -67,7 +67,7 @@
                 <mat-form-field appearance='fill'>
                     <mat-label>Week</mat-label>
                     <mat-select [formControl]='allWeeks' (selectionChange)='onSelectClick($event)' [(value)]='currentWeek'>
-                        <mat-option *ngFor='let week of allWeeks' [value]='week'>{{week + 1}}</mat-option>
+                        <mat-option *ngFor='let week of allWeeks' [value]='week'>{{week}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
