@@ -1,4 +1,40 @@
 <html>
-    <br><br>
-    <p class='text-center'>Contact page coming soon...</p>
+    <br>
+    <br>
+    <h1 class='text-center'>Contact Us</h1>
+    <p class='text-center'>Enter a name and email address if you would like to hear back from us</p>
+    <hr>
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-md-5 col-sm-8 col-xs-10">
+                <form class="contact" [formGroup]="form" method="post" (ngSubmit)="onSubmit()">
+                    <mat-form-field style="width: 100%;">
+                        <mat-label>Name</mat-label>
+                        <input matInput [formControl]="name">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Email</mat-label>
+                        <input matInput [formControl]="email" placeholder="email@example.com">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Subject</mat-label>
+                        <input matInput [formControl]="subject" required>
+                        <mat-error *ngIf="subject.invalid">Please enter a subject</mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Message</mat-label>
+                        <textarea matInput [formControl]="message" maxlength="1200" placeholder="Your Message Here" required style="height: 12vmin;"></textarea>
+                        <mat-hint [align]="'end'"> {{message.value?.length || 0}}/1200</mat-hint>
+                        <mat-error *ngIf="message.invalid">Please enter a message</mat-error>
+                    </mat-form-field>
+                    <button [disabled]="isLoading" class="submit" type="submit" style="width: 50%; align-self: center;">Submit</button>
+                    <input [formControl]="honeypot" class="hidden" type="text" />
+                    <div [ngClass]="!submitted? 'hidden' : 'visible'" class="center-text">
+                        <span>{{responseMessage}}</span>
+                    </div>
+                    <br>
+                </form>
+            </div>
+        </div>
+    </div>
 </html>
