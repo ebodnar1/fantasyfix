@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, OnChanges, ChangeDetectorRef} from '@angular/core';
 import {ScoreboardService} from '../scoreboard.service';
 import { MatTable } from '@angular/material/table';
 
@@ -8,17 +8,17 @@ import { MatTable } from '@angular/material/table';
   styleUrls: ['./team.component.css']
 })
 
-export class TeamComponent implements OnInit {
+export class TeamComponent implements AfterViewInit, OnChanges, OnInit {
 
-  constructor(private scoreboard: ScoreboardService) { }
+  constructor(private scoreboard: ScoreboardService, private cdr: ChangeDetectorRef) { }
 
-  public allTeams = [];
+  public allTeams = this.scoreboard.listTeamNames();
   public filled: boolean = false;
   public selected;
   public chosen: boolean = false;
   public teamStats = [];
   public condensed;
-  public weeks;
+  public weeks = [];
   public currentWeek;
   public selectedWeek;
   public pieChartData;
@@ -60,11 +60,19 @@ export class TeamComponent implements OnInit {
     domain: ['#5D0FBC', '#1C9C5A', '#21C6FC']
   };
 
-  ngOnInit(): void {
+  ngOnInit(): void{
+    this.allTeams = this.scoreboard.listTeamNames();
+  }
+
+  ngAfterViewInit(): void {
     this.selectedWeek = this.scoreboard.currentWeek;
-    this.allTeams = this.listTeamNames();
     this.filled = this.scoreboard.filled;
-    this.weeks = this.scoreboard.allWeeks;
+    for(let i = 0; i < this.scoreboard.allWeeks.length; i++){
+      this.weeks[i] = this.scoreboard.allWeeks[i];
+    }
+    if(this.weeks.length && this.weeks[this.weeks.length - 1] != 'Average'){
+      this.weeks.push('Average')
+    }
     this.currentWeek = this.scoreboard.currentWeek;
     this.selectedWeek = this.currentWeek;
     this.scoreboard.setCurrentSelected(false);
@@ -73,12 +81,18 @@ export class TeamComponent implements OnInit {
       this.categoryNames[i] = this.scoreboard.categoryNames[this.scoreboard.scoringCategories[i].categoryNum];
     }
 
-    if(this.allTeams.length){
+    if(this.allTeams != null){
       console.log("GOOD");
     }
     else{
       console.log("ERROR");
     }
+    this.cdr.detectChanges();
+  }
+
+  ngOnChanges(): void{
+    this.cdr.detectChanges();
+    this.table.renderRows();
   }
 
   @ViewChild(MatTable) table: MatTable<any>;
@@ -105,10 +119,16 @@ export class TeamComponent implements OnInit {
 
   onWeekClick(val){
     this.teamStats.length = 0;
+
+    if(val.value == 'Average'){
+      console.log('avg selected');
+    }
+
+    
     this.selectedWeek = this.scoreboard.convertWeek(val.value);
     this.scoreboard.currentSelected = this.currentWeek == this.selectedWeek + 1;
     this.scoreboard.getWeekSelected(this.selectedWeek);
-
+    
     if(this.selectedWeek < this.currentWeek){
       this.teamStats.push(this.scoreboard.getStatsForTeam(this.selected, this.selectedWeek));
       let avg = this.scoreboard.getAverage(this.selectedWeek);
@@ -145,13 +165,4 @@ export class TeamComponent implements OnInit {
     this.lineChartData = this.scoreboard.getStatsByCategory(cat, this.selected);
     this.lineChartData.push(this.scoreboard.getAverageByCategory(cat));
   }
-
-  listTeamNames(){
-    let temp = [];
-    for(let i = 1; i <= this.scoreboard.numTeams; i++){
-      temp.push(this.scoreboard.fullTeamNames[i]);
-    }
-    return temp;
-  }
-
 }

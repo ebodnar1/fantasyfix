@@ -41,6 +41,7 @@ import { TeamComponent } from './team/team.component';
 import { LeagueComponent } from './league/league.component';
 import { ContactComponent } from './contact/contact.component';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
+import { InfoComponent } from './info/info.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import {NgxChartsModule} from '@swimlane/ngx-charts';
     HomeComponent,
     TeamComponent,
     LeagueComponent,
-    ContactComponent
+    ContactComponent,
+    InfoComponent
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,94 @@
 <html>
     <br><br>
-    <p class='text-center'>
-        League page coming soon...
-    </p>
+    <h1 class='text-center'>My League</h1>
+    <hr>
+    <p class='text-center' *ngIf='!filled'>Please fill out your League ID and the Year on the homepage</p>
+    <br>
+
+    <div class="container-fluid" *ngIf='filled'>
+        <div class="row justify-content-center">
+            <div class="col text-center align-self-center">
+                <h3>League Performance</h3>
+                <p>Learn more about your team's expected results <a [routerLink]="'/info'">here</a></p>
+                <table mat-table [dataSource]='data' class='wide' *ngIf='data'>
+                    <ng-container matColumnDef='TeamID'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Team ID</th>
+                        <td mat-cell *matCellDef="let t"> {{t.TeamID}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='Record'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Record</th>
+                        <td mat-cell *matCellDef="let t"> {{t.Record}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='WinPct'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Win Percentage</th>
+                        <td mat-cell *matCellDef="let t"> {{t.WinPct}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='xRecord'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Expected Win Percentage</th>
+                        <td mat-cell *matCellDef="let t"> {{t.xRecord}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='WinsAboveExpected'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Wins Above Expected</th>
+                        <td mat-cell *matCellDef="let t"> {{t.WinsAboveExpected}} </td>
+                    </ng-container>
+                    
+                    <tr mat-header-row *matHeaderRowDef='display'></tr>
+                    <tr mat-row *matRowDef="let row; columns: display;"></tr>
+                </table>
+            </div>
+        </div>
+
+        <br>
+        <br>
+    </div>
+
+    <div class="container-fluid" *ngIf='views && filled'>
+        <div class="row justify-content-center">
+            <div class="col-6 align-self-center text-center">
+                <h3>League Trends</h3>
+                <p>Select a view to see the trends in your league's points</p>
+            </div>
+        </div>
+        <div class="row justify-content-center" *ngIf='views'>
+            <div class="col-md-2 col-sm-10 text-center">
+                <mat-form-field appearance='fill'>
+                    <mat-label>View</mat-label>
+                    <mat-select (selectionChange)='onViewClick($event)'>
+                        <mat-option value='Total'>Total</mat-option>
+                        <mat-option value='Average'>Average</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <!--
+                <mat-form-field appearance='fill'>
+                    <mat-label>View</mat-label>
+                    <mat-select [formControl]='views' (selectionChange)='onViewClick($event)' [(value)]='default'>
+                        <mat-option *ngFor='let view of views' [value]='view'>{{view}}</mat-option>
+                    </mat-select>
+                    <mat-hint>Hi</mat-hint>
+                </mat-form-field>
+                -->
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid" *ngIf='selected && filled'>
+        <div class="row justify-content-center">
+            <div class="col-11 align-self-center text-center" style='height: 450px'>
+                <ngx-charts-bubble-chart
+                    [scheme]="colorScheme"
+                    [results]="bubbleData"
+                    [xAxis]="showXAxis"
+                    [yAxis]="showYAxis"
+                    [legend]="showLegend"
+                    [showXAxisLabel]="showXAxisLabel"
+                    [showYAxisLabel]="showYAxisLabel"
+                    [xAxisLabel]="xAxisLabel"
+                    [yAxisLabel]="yAxisLabel"
+                    [xScaleMin]='xScaleMin'
+                    [yScaleMin]='yScaleMin'>
+                </ngx-charts-bubble-chart>
+            </div>
+        </div>
+    </div>
+    <br>
 </html>

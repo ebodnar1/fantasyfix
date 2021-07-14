@@ -1,0 +1,141 @@
+<html>
+    <br><br>
+    <div class="row justify-content-center">
+        <div class="col-10 align-self-center text-center">
+            <h1>FAQs</h1>
+            <hr>
+            <br>
+            <h3>Finding your League ID</h3>
+            <p>
+                1. Navigate to the 'League' page for your ESPN Head-to-Head League
+                <br>
+                2. Click the URL and copy the number following 'leagueId='
+                <br>
+                <br>
+                <img src="assets/leagueID_sample.png" class="img-fluid sample">
+                <br>
+                <a style='font-style: italic;'>This league's ID is 000000001</a>
+            </p>
+        </div>
+    </div>
+    <br><hr><br>
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-10 align-self-center text-center">
+                <h3 class='text-center'>
+                    Expected Results
+                </h3>
+                <p class='text-center'>
+                    Expected results are calculated by comparing each team's weekly score to every other team's score for that week.
+                    The team with the highest score for a week will earn 1 expected wins for that week, since they would have beaten any opponent they would have faced.
+                    The team with the lowest score for a week will earn 0 expected wins for that week, since they would have lost to any opponent they would have faced.
+                    The expected wins are summed for all completed weeks and compared to each team's actual net wins (wins + half credit to losses), which
+                    yields the wins above expected value shown. A positive value for wins above expected means a team is getting lucky in their matchups
+                    and exceeding expectations, while a negative value means a team is getting unlucky in their matchups, and should be performing better.
+                    <br><br>
+                    Take this two week stretch for example:
+                    <br><br>
+                </p>
+                <h4>Week 1: Team 1 vs Team 2, Team 3 vs Team 4</h4>
+                <table mat-table [dataSource]='dataSource'>
+                    <ng-container matColumnDef='TeamID'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Team ID</th>
+                        <td mat-cell *matCellDef="let t"> {{t.TeamID}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='Points'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Points</th>
+                        <td mat-cell *matCellDef="let t"> {{t.Points}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='Wins'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Wins</th>
+                        <td mat-cell *matCellDef="let t"> {{t.Wins}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='xRecord'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Expected Wins</th>
+                        <td mat-cell *matCellDef="let t"> {{t.xRecord}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='WinsAboveExpected'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Wins Above Expected</th>
+                        <td mat-cell *matCellDef="let t"> {{t.WinsAboveExpected}} </td>
+                    </ng-container>
+                    
+                    <tr mat-header-row *matHeaderRowDef='display'></tr>
+                    <tr mat-row *matRowDef="let row; columns: display;"></tr>
+                </table>
+                <br>
+                <p>Team 1 beat Team 2, earning 1 win. However, Team 1 had the second most points in the league this week, 
+                    earning an expected win total of 0.66, since they would have beaten two of the three other teams in the league. 
+                    This gives Team 1 +0.33 wins above expected, since they would not have won every single possible matchup.
+                    Team 3, with the highest number of points, earned the win and 1 expected wins, making their wins above expected 0.
+                    Team 4 would have beaten Team 2, but was unluckily matched up with Team 3. For this, they earned 0 wins, 
+                    but 0.33 expected wins (would have beaten 1 of 3 other teams), thus giving them -0.33 wins above expected.
+                    <br><br>
+                </p>
+                <h4>Week 2: Team 1 vs Team 4, Team 2 vs Team 3</h4>
+                <table mat-table [dataSource]='dataSource2'>
+                    <ng-container matColumnDef='TeamID'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Team ID</th>
+                        <td mat-cell *matCellDef="let t"> {{t.TeamID}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='Points'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Points</th>
+                        <td mat-cell *matCellDef="let t"> {{t.Points}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='Wins'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Wins</th>
+                        <td mat-cell *matCellDef="let t"> {{t.Wins}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='xRecord'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Expected Wins</th>
+                        <td mat-cell *matCellDef="let t"> {{t.xRecord}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='WinsAboveExpected'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Wins Above Expected</th>
+                        <td mat-cell *matCellDef="let t"> {{t.WinsAboveExpected}} </td>
+                    </ng-container>
+                    
+                    <tr mat-header-row *matHeaderRowDef='display2'></tr>
+                    <tr mat-row *matRowDef="let row; columns: display2;"></tr>
+                </table>
+                <br>
+                <p>
+                    Team 1 beats Team 4 with the most points in the league, earning 1 win and expected wins. 
+                    Team 4 and Team 2 both finish with 20 points, tied for second most in the league. This means they would have
+                    beaten one possible opponent (Team 3), lost to another (Team 1), and tied the last possible opponent. This gives
+                    them each 0.5 expected wins. Team 4, who lost but earned 0.5 expected wins, has -0.5 wins above expected this week, while
+                    Team 2 is the opposite.
+                    <br><br>
+                </p>
+                <h4>After 2 Weeks</h4>
+                <table mat-table [dataSource]='dataSource3'>
+                    <ng-container matColumnDef='TeamID'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Team ID</th>
+                        <td mat-cell *matCellDef="let t"> {{t.TeamID}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='Wins'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Wins</th>
+                        <td mat-cell *matCellDef="let t"> {{t.Wins}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='xRecord'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Expected Wins</th>
+                        <td mat-cell *matCellDef="let t"> {{t.xRecord}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='WinsAboveExpected'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Wins Above Expected</th>
+                        <td mat-cell *matCellDef="let t"> {{t.WinsAboveExpected}} </td>
+                    </ng-container>
+                    
+                    <tr mat-header-row *matHeaderRowDef='display3'></tr>
+                    <tr mat-row *matRowDef="let row; columns: display3;"></tr>
+                </table>
+                <br>
+                <p>
+                    After two weeks, Team 1 earned 2 wins and 1.67 expected wins, resulting in a slightly lucky 0.33 wins above expected.
+                    Team 2 earned 0.5 wins above expected, meaning they have also been slightly lucky in their matchups so far.
+                    Team 3 has performed exactly to expectation, earning 1 win and expected win. 
+                    Finally, Team 4 has been unlucky, earning 0 wins but 0.83 expected wins, resulting in -0.83 wins above expected.
+                </p>
+            </div>
+        </div>
+    </div>
+</html>

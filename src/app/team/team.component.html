@@ -5,14 +5,13 @@
     <p class='text-center' *ngIf='!filled'>Please fill out your League ID and the Year on the homepage</p>
     <br>
 
-    <div class="container-fluid" *ngIf='filled'>
+    <div class="container-fluid" *ngIf='allTeams && filled'>
         <div class="row justify-content-center">
             <div class="col-md-2 col-sm-10 text-center">
                 <p class='text-center'>Select a team</p>
                 <mat-form-field appearance='fill'>
-                    <!--FIX THIS LABEL-->
                     <mat-label>Team</mat-label>
-                    <mat-select [formControl]='allTeams' (selectionChange)='onSelectClick($event)' placeholder="Team">
+                    <mat-select [formControl]='allTeams' (selectionChange)='onSelectClick($event)'>
                         <mat-option *ngFor='let team of allTeams' [value]='team'>{{team}}</mat-option>
                     </mat-select>
                 </mat-form-field>
