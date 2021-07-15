@@ -183,6 +183,10 @@
         <div class="row justify-content-center">
             <div class="col text-center align-self-center">
                 <h3>Scoreboard</h3>
+
+                <!--Option: split into multiple tables, each with 10 categories-->
+                <!--Option: have teams along the x axis, categories along the y axis, use pagination-->
+
                 <table mat-table [dataSource]="displayWeekScores">
                     <ng-container matColumnDef='TeamID'>
                         <th mat-header-cell *matHeaderCellDef class='text-center'>ID</th>
@@ -228,6 +232,231 @@
                     <ng-container matColumnDef='SV'>
                         <th mat-header-cell *matHeaderCellDef class='text-center'>SV</th>
                         <td mat-cell *matCellDef="let t"> {{t.SV}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='Total'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Total</th>
+                        <td mat-cell *matCellDef="let t"> {{t.Total}} </td>
+                    </ng-container>
+                    <!--This will allow me to hardcode every possible category, even if it is not to be displayed! yay!-->
+                    <ng-container matColumnDef='AB'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>AB</th>
+                        <td mat-cell *matCellDef="let t"> {{t.AB}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='H'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>H</th>
+                        <td mat-cell *matCellDef="let t"> {{t.H}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='Single'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Single</th>
+                        <td mat-cell *matCellDef="let t"> {{t.Single}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='Double'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Double</th>
+                        <td mat-cell *matCellDef="let t"> {{t.Double}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='Triple'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Triple</th>
+                        <td mat-cell *matCellDef="let t"> {{t.Triple}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='TB'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>TB</th>
+                        <td mat-cell *matCellDef="let t"> {{t.TB}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='XBH'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>XBH</th>
+                        <td mat-cell *matCellDef="let t"> {{t.XBH}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='GWRBI'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Game Winning RBI</th>
+                        <td mat-cell *matCellDef="let t"> {{t.GWRBI}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='BB'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>BB</th>
+                        <td mat-cell *matCellDef="let t"> {{t.BB}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='IBB'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Intentional BB</th>
+                        <td mat-cell *matCellDef="let t"> {{t.IBB}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='SO'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>SO (Batter)</th>
+                        <td mat-cell *matCellDef="let t"> {{t.SO}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='HBP'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>HBP (Batter)</th>
+                        <td mat-cell *matCellDef="let t"> {{t.HBP}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='Sac'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Sacrifice</th>
+                        <td mat-cell *matCellDef="let t"> {{t.Sac}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='RC'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Runs Created</th>
+                        <td mat-cell *matCellDef="let t"> {{t.RC}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='CS'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>CS</th>
+                        <td mat-cell *matCellDef="let t"> {{t.CS}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='SBN'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>SNB??</th>
+                        <td mat-cell *matCellDef="let t"> {{t.SBN}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='GDP'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>GDP</th>
+                        <td mat-cell *matCellDef="let t"> {{t.GDP}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='PPA'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Pitches per PA</th>
+                        <td mat-cell *matCellDef="let t"> {{t.PPA}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='OBP'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>OBP</th>
+                        <td mat-cell *matCellDef="let t"> {{t.OBP}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='SLG'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>SLG</th>
+                        <td mat-cell *matCellDef="let t"> {{t.SLG}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='OPS'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>OPS</th>
+                        <td mat-cell *matCellDef="let t"> {{t.OPS}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='FC'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>FC</th>
+                        <td mat-cell *matCellDef="let t"> {{t.FC}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='PO'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Put Outs</th>
+                        <td mat-cell *matCellDef="let t"> {{t.PO}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='A'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Assists</th>
+                        <td mat-cell *matCellDef="let t"> {{t.A}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='OAST'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Outfield Assists</th>
+                        <td mat-cell *matCellDef="let t"> {{t.OAST}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='E'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Errors</th>
+                        <td mat-cell *matCellDef="let t"> {{t.E}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='DPT'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Double Plays Turned</th>
+                        <td mat-cell *matCellDef="let t"> {{t.DPT}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='FPCT'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Fielding %</th>
+                        <td mat-cell *matCellDef="let t"> {{t.FPCT}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='BTW'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>BTW??</th>
+                        <td mat-cell *matCellDef="let t"> {{t.BTW}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='G'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Games (Pitching)</th>
+                        <td mat-cell *matCellDef="let t"> {{t.G}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='GS'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>GS (Pitching)</th>
+                        <td mat-cell *matCellDef="let t"> {{t.GS}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='O'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Outs Made</th>
+                        <td mat-cell *matCellDef="let t"> {{t.IP}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='HA'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Hits Allowed</th>
+                        <td mat-cell *matCellDef="let t"> {{t.HA}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='RA'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Runs Allowed</th>
+                        <td mat-cell *matCellDef="let t"> {{t.RA}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='ER'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>ER Allowed</th>
+                        <td mat-cell *matCellDef="let t"> {{t.ER}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='HRA'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>HR Allowed</th>
+                        <td mat-cell *matCellDef="let t"> {{t.HRA}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='BBA'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>BB Allowed</th>
+                        <td mat-cell *matCellDef="let t"> {{t.BBA}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='HBPP'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>HBP (Pitcher)</th>
+                        <td mat-cell *matCellDef="let t"> {{t.HBPP}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='QS'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>QS</th>
+                        <td mat-cell *matCellDef="let t"> {{t.QS}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='CG'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>CG</th>
+                        <td mat-cell *matCellDef="let t"> {{t.CG}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='SHU'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Shutouts</th>
+                        <td mat-cell *matCellDef="let t"> {{t.SHU}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='BF'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Batters Faced</th>
+                        <td mat-cell *matCellDef="let t"> {{t.BF}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='PC'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Pitch Count (?)</th>
+                        <td mat-cell *matCellDef="let t"> {{t.PC}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='L'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>L</th>
+                        <td mat-cell *matCellDef="let t"> {{t.L}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='WPCT'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Win %</th>
+                        <td mat-cell *matCellDef="let t"> {{t.WPCT}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='SOP'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>SOP??</th>
+                        <td mat-cell *matCellDef="let t"> {{t.SOP}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='BS'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>BS</th>
+                        <td mat-cell *matCellDef="let t"> {{t.BS}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='SVPCT'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Save %</th>
+                        <td mat-cell *matCellDef="let t"> {{t.SVPCT}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='HD'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>HD</th>
+                        <td mat-cell *matCellDef="let t"> {{t.HD}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='BAA'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>BA Against</th>
+                        <td mat-cell *matCellDef="let t"> {{t.BAA}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='OBPA'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>OBP Against</th>
+                        <td mat-cell *matCellDef="let t"> {{t.OBPA}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='KN'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>K/9</th>
+                        <td mat-cell *matCellDef="let t"> {{t.KN}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='PTW'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>PTW??</th>
+                        <td mat-cell *matCellDef="let t"> {{t.PTW}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='KW'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>K/W</th>
+                        <td mat-cell *matCellDef="let t"> {{t.KW}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='SVHD'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>SV + HD</th>
+                        <td mat-cell *matCellDef="let t"> {{t.SVHD}} </td>
                     </ng-container>
 
                     <tr mat-header-row *matHeaderRowDef='condensed'></tr>
@@ -294,11 +523,226 @@
                         <th mat-header-cell *matHeaderCellDef class='text-center'>Total</th>
                         <td mat-cell *matCellDef="let t"> {{t.Total}} </td>
                     </ng-container>
-
                     <!--This will allow me to hardcode every possible category, even if it is not to be displayed! yay!-->
-                    <ng-container matColumnDef='Test'>
-                        <th mat-header-cell *matHeaderCellDef class='text-center'>Test</th>
-                        <td mat-cell *matCellDef='let t'>{{t.Test}}</td>
+                    <ng-container matColumnDef='AB'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>AB</th>
+                        <td mat-cell *matCellDef="let t"> {{t.AB}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='H'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>H</th>
+                        <td mat-cell *matCellDef="let t"> {{t.H}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='Single'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Single</th>
+                        <td mat-cell *matCellDef="let t"> {{t.Single}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='Double'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Double</th>
+                        <td mat-cell *matCellDef="let t"> {{t.Double}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='Triple'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Triple</th>
+                        <td mat-cell *matCellDef="let t"> {{t.Triple}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='TB'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>TB</th>
+                        <td mat-cell *matCellDef="let t"> {{t.TB}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='XBH'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>XBH</th>
+                        <td mat-cell *matCellDef="let t"> {{t.XBH}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='GWRBI'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Game Winning RBI</th>
+                        <td mat-cell *matCellDef="let t"> {{t.GWRBI}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='BB'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>BB</th>
+                        <td mat-cell *matCellDef="let t"> {{t.BB}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='IBB'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Intentional BB</th>
+                        <td mat-cell *matCellDef="let t"> {{t.IBB}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='SO'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>SO (Batter)</th>
+                        <td mat-cell *matCellDef="let t"> {{t.SO}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='HBP'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>HBP (Batter)</th>
+                        <td mat-cell *matCellDef="let t"> {{t.HBP}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='Sac'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Sacrifice</th>
+                        <td mat-cell *matCellDef="let t"> {{t.Sac}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='RC'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Runs Created</th>
+                        <td mat-cell *matCellDef="let t"> {{t.RC}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='CS'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>CS</th>
+                        <td mat-cell *matCellDef="let t"> {{t.CS}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='SBN'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>SNB??</th>
+                        <td mat-cell *matCellDef="let t"> {{t.SBN}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='GDP'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>GDP</th>
+                        <td mat-cell *matCellDef="let t"> {{t.GDP}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='PPA'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Pitches per PA</th>
+                        <td mat-cell *matCellDef="let t"> {{t.PPA}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='OBP'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>OBP</th>
+                        <td mat-cell *matCellDef="let t"> {{t.OBP}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='SLG'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>SLG</th>
+                        <td mat-cell *matCellDef="let t"> {{t.SLG}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='OPS'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>OPS</th>
+                        <td mat-cell *matCellDef="let t"> {{t.OPS}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='FC'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>FC</th>
+                        <td mat-cell *matCellDef="let t"> {{t.FC}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='PO'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Put Outs</th>
+                        <td mat-cell *matCellDef="let t"> {{t.PO}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='A'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Assists</th>
+                        <td mat-cell *matCellDef="let t"> {{t.A}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='OAST'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Outfield Assists</th>
+                        <td mat-cell *matCellDef="let t"> {{t.OAST}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='E'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Errors</th>
+                        <td mat-cell *matCellDef="let t"> {{t.E}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='DPT'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Double Plays Turned</th>
+                        <td mat-cell *matCellDef="let t"> {{t.DPT}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='FPCT'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Fielding %</th>
+                        <td mat-cell *matCellDef="let t"> {{t.FPCT}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='BTW'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>BTW??</th>
+                        <td mat-cell *matCellDef="let t"> {{t.BTW}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='G'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Games (Pitching)</th>
+                        <td mat-cell *matCellDef="let t"> {{t.G}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='GS'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>GS (Pitching)</th>
+                        <td mat-cell *matCellDef="let t"> {{t.GS}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='O'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Outs Made</th>
+                        <td mat-cell *matCellDef="let t"> {{t.IP}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='HA'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Hits Allowed</th>
+                        <td mat-cell *matCellDef="let t"> {{t.HA}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='RA'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Runs Allowed</th>
+                        <td mat-cell *matCellDef="let t"> {{t.RA}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='ER'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>ER Allowed</th>
+                        <td mat-cell *matCellDef="let t"> {{t.ER}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='HRA'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>HR Allowed</th>
+                        <td mat-cell *matCellDef="let t"> {{t.HRA}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='BBA'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>BB Allowed</th>
+                        <td mat-cell *matCellDef="let t"> {{t.BBA}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='HBPP'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>HBP (Pitcher)</th>
+                        <td mat-cell *matCellDef="let t"> {{t.HBPP}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='QS'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>QS</th>
+                        <td mat-cell *matCellDef="let t"> {{t.QS}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='CG'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>CG</th>
+                        <td mat-cell *matCellDef="let t"> {{t.CG}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='SHU'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Shutouts</th>
+                        <td mat-cell *matCellDef="let t"> {{t.SHU}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='BF'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Batters Faced</th>
+                        <td mat-cell *matCellDef="let t"> {{t.BF}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='PC'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Pitch Count (?)</th>
+                        <td mat-cell *matCellDef="let t"> {{t.PC}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='L'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>L</th>
+                        <td mat-cell *matCellDef="let t"> {{t.L}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='WPCT'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Win %</th>
+                        <td mat-cell *matCellDef="let t"> {{t.WPCT}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='SOP'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>SOP??</th>
+                        <td mat-cell *matCellDef="let t"> {{t.SOP}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='BS'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>BS</th>
+                        <td mat-cell *matCellDef="let t"> {{t.BS}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='SVPCT'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>Save %</th>
+                        <td mat-cell *matCellDef="let t"> {{t.SVPCT}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='HD'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>HD</th>
+                        <td mat-cell *matCellDef="let t"> {{t.HD}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='BAA'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>BA Against</th>
+                        <td mat-cell *matCellDef="let t"> {{t.BAA}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='OBPA'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>OBP Against</th>
+                        <td mat-cell *matCellDef="let t"> {{t.OBPA}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='KN'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>K/9</th>
+                        <td mat-cell *matCellDef="let t"> {{t.KN}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='PTW'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>PTW??</th>
+                        <td mat-cell *matCellDef="let t"> {{t.PTW}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='KW'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>K/W</th>
+                        <td mat-cell *matCellDef="let t"> {{t.KW}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef='SVHD'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'>SV + HD</th>
+                        <td mat-cell *matCellDef="let t"> {{t.SVHD}} </td>
                     </ng-container>
 
                     <tr mat-header-row *matHeaderRowDef='pointsColumns'></tr>

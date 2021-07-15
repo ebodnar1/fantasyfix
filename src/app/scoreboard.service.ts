@@ -3,6 +3,8 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs'
 import {map, filter, catchError} from 'rxjs/operators';
 
+//Check SVHD - do I need to do any addition?
+//What is SOP, SVHD, BTW, PTW, SBN
 
 export interface Category{
   categoryNum: number;
@@ -41,6 +43,52 @@ export class ScoreboardService {
 		"45": "ER",
 		"17": "OBP",
 		"18": "OPS",
+		"7": "Single",
+		"3": "Double",
+		"4": "Triple",
+		"6": "XBH",
+		"8": "TB",
+		"22": "GWRBI",
+		"10": "BB",
+		"11": "IBB",
+		"27": "SO",
+		"12": "HBP",
+		"15": "Sac",
+		"19": "RC",
+		"24": "CS",
+		"25": "SBN",
+		"26": "GDP",
+		"29": "PPA",
+		"9": "SLG",
+		"67": "FC",
+		"68": "PO",
+		"69": "A",
+		"70": "OAST",
+		"72": "E",
+		"73": "DPT",
+		"71": "FPCT",
+		"74": "BTW",
+		"32": "G",
+		"33": "GS",
+		"44": "RA",
+		"46": "HRA",
+		"42": "HBPP",
+		"63": "QS",
+		"64": "SHU",
+		"35": "BF",
+		"36": "PC",
+		"54": "L",
+		"55": "WPCT",
+		"56": "SOP",
+		"58": "BS",
+		"59": "SVPCT",
+		"60": "HD",
+		"38": "BAA",
+		"43": "OBPA",
+		"49": "KN",
+		"76": "PTW",
+		"82": "KW",
+		"83": "SVHD",
 		"100": "TeamID"
 	}
 
@@ -63,6 +111,53 @@ export class ScoreboardService {
 		"ER": "45",
 		"OBP": "17",
 		"OPS": "18",
+		"Single": "7",
+		"Double": "3",
+		"Triple": "4",
+		"XBH": "6",
+		"TB": "8",
+		"GWRBI": "22",
+		"BB": "10",
+		"IBB": "11",
+		"SO": "27",
+		"HBP": "12",
+		"Sac": "15",
+		"RC": "19",
+		"CS": "24",
+		"SBN": "25",
+		"GDP": "26",
+		"PPA": "29",
+		"SLG": "9",
+		"FC": "67",
+		"PO": "68",
+		"A": "69",
+		"OAST": "70",
+		"E": "72",
+		"DPT": "73",
+		"FPCT": "71",
+		"BTW": "74",
+		"G": "32",
+		"GS": "33",
+		"RA": "44",
+		"HRA": "46",
+		"HBPP": "42",
+		"QS": "63",
+		"CG": "62",
+		"SHU": "64",
+		"BF": "35",
+		"PC": "36",
+		"L": "54",
+		"WPCT": "55",
+		"SOP": "56",
+		"BS": "58",
+		"SVPCT": "59",
+		"HD": "60",
+		"BAA": "38",
+		"OBPA": "43",
+		"KN": "49",
+		"PTW": "76",
+		"KW": "82",
+		"SVHD": "83",
 		"TeamID": "100"
 	}
 
@@ -406,6 +501,53 @@ export class ScoreboardService {
 				trackedCategories.indexOf(45) === -1 ? trackedCategories.push(45) : null;
 				trackedCategories.indexOf(34) === -1 ? trackedCategories.push(34) : null;
 			}
+			else if(this.scoringCategories[i].categoryNum == 9){
+				trackedCategories.indexOf(8) === -1 ? trackedCategories.push(8) : null;
+				trackedCategories.indexOf(0) === -1 ? trackedCategories.push(0) : null;
+			}
+			else if(this.scoringCategories[i].categoryNum == 17){
+				trackedCategories.indexOf(0) === -1 ? trackedCategories.push(0) : null;
+				trackedCategories.indexOf(1) === -1 ? trackedCategories.push(1) : null;
+				trackedCategories.indexOf(10) === -1 ? trackedCategories.push(10) : null;
+				trackedCategories.indexOf(12) === -1 ? trackedCategories.push(12) : null;
+			}
+			else if(this.scoringCategories[i].categoryNum == 18){
+				trackedCategories.indexOf(0) === -1 ? trackedCategories.push(0) : null;
+				trackedCategories.indexOf(1) === -1 ? trackedCategories.push(1) : null;
+				trackedCategories.indexOf(8) === -1 ? trackedCategories.push(8) : null;
+				trackedCategories.indexOf(10) === -1 ? trackedCategories.push(10) : null;
+			}
+			else if(this.scoringCategories[i].categoryNum == 71){
+				trackedCategories.indexOf(68) === -1 ? trackedCategories.push(68) : null;
+				trackedCategories.indexOf(69) === -1 ? trackedCategories.push(69) : null;
+				trackedCategories.indexOf(72) === -1 ? trackedCategories.push(72) : null;
+			}
+			else if(this.scoringCategories[i].categoryNum == 55){
+				trackedCategories.indexOf(53) === -1 ? trackedCategories.push(53) : null;
+				trackedCategories.indexOf(33) === -1 ? trackedCategories.push(33) : null;
+			}
+			else if(this.scoringCategories[i].categoryNum == 59){
+				trackedCategories.indexOf(57) === -1 ? trackedCategories.push(57) : null;
+				trackedCategories.indexOf(58) === -1 ? trackedCategories.push(58) : null;
+			}
+			else if(this.scoringCategories[i].categoryNum == 38){
+				trackedCategories.indexOf(37) === -1 ? trackedCategories.push(37) : null;
+				trackedCategories.indexOf(35) === -1 ? trackedCategories.push(35) : null;
+			}
+			else if(this.scoringCategories[i].categoryNum == 43){
+				trackedCategories.indexOf(37) === -1 ? trackedCategories.push(37) : null;
+				trackedCategories.indexOf(35) === -1 ? trackedCategories.push(35) : null;
+				trackedCategories.indexOf(39) === -1 ? trackedCategories.push(39) : null;
+				trackedCategories.indexOf(42) === -1 ? trackedCategories.push(42) : null;
+			}
+			else if(this.scoringCategories[i].categoryNum == 49){
+				trackedCategories.indexOf(48) === -1 ? trackedCategories.push(48) : null;
+				trackedCategories.indexOf(34) === -1 ? trackedCategories.push(34) : null;
+			}
+			else if(this.scoringCategories[i].categoryNum == 82){
+				trackedCategories.indexOf(48) === -1 ? trackedCategories.push(48) : null;
+				trackedCategories.indexOf(53) === -1 ? trackedCategories.push(53) : null;
+			}
 			else{
 				trackedCategories.push(this.scoringCategories[i].categoryNum);
 			}
@@ -593,8 +735,10 @@ export class ScoreboardService {
       		for(let j = 0; j < this.numTeams; j++){
         		temp[this.categoryNames[i.categoryNum]] += this.displayWeekScores[j][this.categoryNames[i.categoryNum]];
       		}
-      		//IMPLEMENT WITH OTHER RATIO CATEGORIES
-      		if(i.categoryNum == 41 || i.categoryNum == 47 || i.categoryNum == 2){
+      		if(i.categoryNum == 41 || i.categoryNum == 47 || i.categoryNum == 2 || i.categoryNum == 17
+				|| i.categoryNum == 9 || i.categoryNum == 18 || i.categoryNum == 71 || i.categoryNum == 55
+				|| i.categoryNum == 59 || i.categoryNum == 38 || i.categoryNum == 43
+				|| i.categoryNum == 49 || i.categoryNum == 82){
 				let x = temp[this.categoryNames[i.categoryNum]] / this.numTeams
         		temp[this.categoryNames[i.categoryNum]] = +Number(x).toFixed(3);
       		}
@@ -673,6 +817,101 @@ export class ScoreboardService {
 						}
 						else{
 							displayStats[this.categoryNames[2]] = 0;
+						}
+					}
+					if(i.categoryNum == 17){
+						//IS 'AB' Plate Appearances or At Bats?????
+						if(fullStats[j]['AB'] != 0){
+							let x = ((fullStats[j]['H'] + fullStats[j]['BB'] + fullStats[j]['HBP']) / fullStats[j]['AB']);
+							displayStats[this.categoryNames[17]] = +Number(x).toFixed(3);
+						}
+						else{
+							displayStats[this.categoryNames[17]] = 0;
+						}
+					}
+					if(i.categoryNum == 9){
+						if(fullStats[j]['AB'] != 0){
+							let x = (fullStats[j]['TB']) / fullStats[j]['AB'];
+							displayStats[this.categoryNames[9]] = +Number(x).toFixed(3);
+						}
+						else{
+							displayStats[this.categoryNames[9]] = 0;
+						}
+					}
+					if(i.categoryNum == 18){
+						if(fullStats[j]['AB'] != 0){
+							let x = ((fullStats[j]['H'] + fullStats[j]['BB']) / fullStats[j]['AB']) + (fullStats[j]['TB'] / fullStats[j]['AB']);
+							displayStats[this.categoryNames[18]] = +Number(x).toFixed(3);
+						}
+						else{
+							displayStats[this.categoryNames[18]] = 0;
+						}
+					}
+					if(i.categoryNum == 71){
+						if(fullStats[j]['PO'] != 0 || fullStats[j]['A'] != 0){
+							let num = (fullStats[j]['PO']) + fullStats[j]['A'];
+							let dom = num + fullStats[j]['E'];
+							displayStats[this.categoryNames[71]] = +Number((num / dom)).toFixed(3);
+						}
+						else{
+							displayStats[this.categoryNames[71]] = 0;
+						}
+					}
+					if(i.categoryNum == 55){
+						if(fullStats[j]['W'] != 0 || fullStats[j]['GS'] != 0){
+							let x = fullStats[j]['W'] / fullStats[j]['GS'];
+							displayStats[this.categoryNames[55]] = +Number(x).toFixed(3);
+						}
+						else{
+							displayStats[this.categoryNames[55]] = 0;
+						}
+					}
+					if(i.categoryNum == 59){
+						if(fullStats[j]['SV'] != 0 || fullStats[j]['BS'] != 0){
+							let x = fullStats[j]['SV'] / (fullStats[j]['SV'] + fullStats[j]['BS']);
+							displayStats[this.categoryNames[59]] = +Number(x).toFixed(3);
+						}
+						else{
+							displayStats[this.categoryNames[59]] = 0;
+						}
+					}
+					if(i.categoryNum == 38){
+						if(fullStats[j]['BF'] != 0){
+							let x = fullStats[j]['HA'] / fullStats[j]['BF'];
+							displayStats[this.categoryNames[38]] = +Number(x).toFixed(3);
+						}
+						else{
+							displayStats[this.categoryNames[38]] = 0;
+						}
+					}
+					if(i.categoryNum == 43){
+						if(fullStats[j]['BF'] != 0){
+							let x = (fullStats[j]['HA'] + fullStats[j]['BBA'] + fullStats[j]['HBPP']) / fullStats[j]['BF'];
+							displayStats[this.categoryNames[43]] = +Number(x).toFixed(3);
+						}
+						else{
+							displayStats[this.categoryNames[43]] = 0;
+						}
+					}
+					if(i.categoryNum == 49){
+						if(fullStats[j]['O'] != 0){
+							let x = (fullStats[j]['K'] / fullStats[j]['O']) * 27;
+							displayStats[this.categoryNames[49]] = +Number(x).toFixed(3);
+						}
+						else{
+							displayStats[this.categoryNames[49]] = 0;
+						}
+					}
+					if(i.categoryNum == 82){
+						if(fullStats[j]['K'] != 0 && fullStats[j]['W'] == 0){
+							displayStats[this.categoryNames[82]] = 'INF';
+						}
+						else if(fullStats[j]['K'] != 0 && fullStats[j]['W'] != 0){
+							let x = fullStats[j]['K'] / fullStats[j]['W'];
+							displayStats[this.categoryNames[82]] = +Number(x).toFixed(3);
+						}
+						else{
+							displayStats[this.categoryNames[82]] = 0;
 						}
 					}
 					if(i.categoryNum == 41){
@@ -814,7 +1053,10 @@ export class ScoreboardService {
 			for(let j = 0; j < this.numTeams; j++){
 				sum += allScores[i][j][categoryName];
 			}
-			if(categoryName == 'ERA' || categoryName == 'WHIP' || categoryName == 'BA'){
+			if(categoryName == 'ERA' || categoryName == 'WHIP' || categoryName == 'BA' || 
+			categoryName == 'OBP' || categoryName == 'OPS' || categoryName == 'SLG' || categoryName == 'FPCT'
+			|| categoryName == 'WPCT' || categoryName == 'SVPCT' || categoryName == 'BAA' || categoryName == 'OBPA'
+			|| categoryName == 'KN' || categoryName == 'KW'){
 				let x = sum / this.numTeams;
 				l['value'] = +Number(x).toFixed(3);
 			}
@@ -886,7 +1128,12 @@ export class ScoreboardService {
 
 	rank(arr, category){
 		var sorted = arr.slice().sort(function(a,b){return b-a});
-		if(category == 'ERA' || category =='WHIP'){}
+		//SEARCH add all other reversed categories!!!
+		//Is FC reversed?
+		if(category == 'ERA' || category =='WHIP' || category == 'GDP' || category == 'CS'
+		|| category == 'FC' || category == 'HA' || category == 'RA' || category == 'ER'
+		|| category == 'HRA' || category == 'BBA' || category == 'HBPP' || category == 'L'
+		|| category == 'BS' || category == 'BAA' || category == 'OBPA'){}
 		else{
 			sorted = sorted.reverse();
 		}
