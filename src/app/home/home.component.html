@@ -769,7 +769,11 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid" *ngIf='!weekPlayed'>
-        <div class="row large-row"></div>
+    <div class="container-fluid" *ngIf='!weekPlayed && selected'>
+        <div class="row large-row justify-content-center">
+            <div class="col text-center">
+                <p>This week has not been played yet!</p>
+            </div>
+        </div>
     </div>
 </html>

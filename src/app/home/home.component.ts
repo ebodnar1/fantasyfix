@@ -127,6 +127,7 @@ export class HomeComponent implements OnInit {
    public otherData =[];
    public otherCols = [];
    public overflow: boolean = false;
+   public selected: boolean = false;
 
   async onSubmit() {
 	if (this.form.status == "VALID") {
@@ -190,7 +191,7 @@ export class HomeComponent implements OnInit {
 
 		for(let i = 0; i < this.scoreboard.numTeams; i++){
 			for(let j = 0; j < this.scoreboard.numTeams; j++){
-				if(this.displayWeekScores[i]['TeamID'] == this.scoreboard.unorganized[j]['TeamID']){
+				if(this.weekPlayed && this.displayWeekScores[i]['TeamID'] == this.scoreboard.unorganized[j]['TeamID']){
 					this.displayWeekScores[i]['Total'] = this.scoreboard.unorganized[j]['Total'];
 				}
 			}
@@ -212,6 +213,8 @@ export class HomeComponent implements OnInit {
 			});
 		}
 
+		console.log(this.weekPlayed);
+		this.selected = true;
 		this.table.renderRows();
 	}
 
