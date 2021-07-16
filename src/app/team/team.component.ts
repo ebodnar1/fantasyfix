@@ -53,11 +53,11 @@ export class TeamComponent implements AfterViewInit, OnChanges, OnInit {
 
 
   colorScheme = {
-    domain: ['#989EE7', '#1C9C5A', '#368290', '#5D0FBC', '#8348BD', '#D2F4E2', '#333953', '#BFB5DE']
+    domain: ['#00911B', '#692191', '#5E84FF', '#E01D3C', '#4DFF6E', '#0F7594', '#946F0A', '#4DD5FF', '#26DE48', '#A649DF', '#C6DE49', '#2DB7E0', '#3D63E0', '#910018', '#E0B43D', '#C76EFF', '#7D9113', '#E0862D', '#193694', '#944A00',]
   };
 
   lineScheme = {
-    domain: ['#5D0FBC', '#1C9C5A', '#21C6FC']
+    domain: ['#00911B', '#692191', '#5E84FF']
   };
 
   ngOnInit(): void{

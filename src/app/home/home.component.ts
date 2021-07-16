@@ -121,6 +121,12 @@ export class HomeComponent implements OnInit {
    public rankedDisplay;
    public condensed;
    public pointsColumns;
+   public allTeams = [];
+   public dat = [];
+   public cols = [];
+   public otherData =[];
+   public otherCols = [];
+   public overflow: boolean = false;
 
   async onSubmit() {
 	if (this.form.status == "VALID") {
@@ -171,20 +177,51 @@ export class HomeComponent implements OnInit {
 		}
 	}
 
-
 	@ViewChild(MatTable) table: MatTable<any>;
 	onSelectClick(val){
 
+		this.overflow = this.scoreboard.scoringCategories.length >= 12 ? true : false;
+
+		//this.allTeams = this.scoreboard.teamIDs;
 		this.scoreboard.onSelectClick(val);
 		this.weekPlayed = this.scoreboard.weekPlayed;
 		this.displayWeekScores = this.scoreboard.displayWeekScores;
-		this.rankedDisplay = this.scoreboard.rankedDisplay;
 		this.condensed = this.scoreboard.condensed;
-		this.pointsColumns = this.scoreboard.pointsColumns;
+
+		for(let i = 0; i < this.scoreboard.numTeams; i++){
+			for(let j = 0; j < this.scoreboard.numTeams; j++){
+				if(this.displayWeekScores[i]['TeamID'] == this.scoreboard.unorganized[j]['TeamID']){
+					this.displayWeekScores[i]['Total'] = this.scoreboard.unorganized[j]['Total'];
+				}
+			}
+		}
+		this.displayWeekScores.sort(function(first, second){
+			return second.Total - first.Total;
+		});
+
+		if(this.overflow){
+			this.rankedDisplay = this.scoreboard.rankedDisplay;
+			this.allTeams = this.scoreboard.getTeamOrder(this.scoreboard.unorganized);
+		}
+
+		if(!this.overflow){
+			this.pointsColumns = this.scoreboard.pointsColumns;
+			this.otherData = this.scoreboard.unorganized;
+			this.otherData.sort(function(first, second){
+				return second.Total - first.Total;
+			});
+		}
+
 		this.table.renderRows();
 	}
 
 	
 	ngOnInit(): void {
+		this.cols = ['category', 'BOD', 'TONY'];
+		this.dat = [
+			{category: 'H', BOD: '2', TONY: '3'},
+			{category: 'R', BOD: '5', TONY: '1'},
+			{category: 'HR', BOD: '21', TONY: '0'},
+		]
 	}
 }

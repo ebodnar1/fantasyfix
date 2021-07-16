@@ -467,13 +467,13 @@
     </div>
 
 
-    <div class="container-fluid" *ngIf='weekPlayed'>
+    <div class="container-fluid" *ngIf='weekPlayed && !overflow'>
         <br>
         <br>
         <div class="row justify-content-center">
             <div class="col text-center align-self-center">
                 <h3>Points</h3>
-                <table mat-table [dataSource]="rankedDisplay">
+                <table mat-table [dataSource]="otherData">
                     <ng-container matColumnDef='TeamID'>
                         <th mat-header-cell *matHeaderCellDef class='text-center'>ID</th>
                         <td mat-cell *matCellDef="let t"> {{t.TeamID}} </td>
@@ -751,6 +751,23 @@
             </div>
         </div>
         <br>
+    </div>
+
+    <div class="container-fluid" *ngIf='overflow'>
+        <br><br>
+        <div class="row justify-content-center">
+            <div class="col text-center align-self-center">
+                <table mat-table [dataSource]="rankedDisplay">
+                    <ng-container [matColumnDef]='team' *ngFor='let team of allTeams'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'> {{team}} </th>
+                        <td mat-cell *matCellDef='let x' class='text-center'>{{x[team]}}</td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef='allTeams' class='text-center'></tr>
+                    <tr mat-row *matRowDef="let row; columns: allTeams;" class='text-center'></tr>
+                </table>
+            </div>
+        </div>
     </div>
     <div class="container-fluid" *ngIf='!weekPlayed'>
         <div class="row large-row"></div>

@@ -213,6 +213,8 @@ export class ScoreboardService {
 
 	//
 	public allTeams: any[];
+	public weeksPlayed: any[] = [];
+	public unorganized = [];
 
 	fillStart(){
 		this.numTeams = this.scoreboardItems['teams'].length;
@@ -242,6 +244,7 @@ export class ScoreboardService {
 		this.todaysStats.length = 0;
 		this.weekStats.length = 0;
 		this.thisWeeksScores.length = 0;
+		this.weeksPlayed.length = 0;
 
 		let scores = [];
 		//Get cumulativeScores
@@ -254,6 +257,21 @@ export class ScoreboardService {
 		}
 		//this.cumulativeScores.map(data => console.log(data['scoreByStat']));//this.scoresByStat.push(data['scoreByStat']));
 		this.scoreboardItems['schedule'].map(data => this.teamsForGames.push(data["home"]['teamId'], data["away"]['teamId']))
+
+		let count = 0;
+		for(let i = 0; i < this.currentWeek - 1; i++){
+			let flag = true;
+			for(let j = 0; j < (this.numTeams / 2); j++){
+				if(this.scoreboardItems['schedule'][count + j]['winner'] == 'UNDECIDED'){
+					flag = false;
+					break;
+				}
+			}
+			if(flag){
+				this.weeksPlayed.push(i + 1);
+			}
+			count += (this.numTeams / 2);
+		}
 
 		if(!this.thisWeeksScores.length){
 			for(let i = (this.currentWeek - 1) * this.numTeams; i < ((this.currentWeek) * this.numTeams); i++){
@@ -279,8 +297,23 @@ export class ScoreboardService {
 		this.setupCondensedTable();
 
 		let ranked = this.getRankingsEachCategory(this.displayWeekScores);
-		this.rankedDisplay = this.toOverallRankings(ranked);
+		this.unorganized = this.toOverallRankings(ranked);
+		if(this.scoringCategories.length >= 12){
+			this.rankedDisplay = this.shiftData(this.unorganized);
+		}
+
 		this.setupPointsTable();
+	}
+
+	getTeamOrder(unorg){
+		let ret = ['Category'];
+		unorg.sort(function(first, second){
+			return first.Total - second.Total;
+		});
+		for(let i = 0; i < unorg.length; i++){
+			ret.push(unorg[i]['TeamID']);
+		}
+		return ret;
 	}
 
 	listTeamNames(){
@@ -291,10 +324,58 @@ export class ScoreboardService {
 		return temp;
 	  }
 	
+	shiftData(dic){
+		let week = this.getWeeksPlayed();
+		let res = [];
+		for(let k of this.scoringCategories){
+			let temp = {};
+			for(let j = 0; j < this.numTeams; j++){
+				temp['Category'] = this.categoryNames[k.categoryNum];
+				temp[this.teamIDs[j + 1]] = dic[j][this.categoryNames[k.categoryNum]]
+			}
+			res.push(temp);
+		}
+		let flag = false;
+		let keys = Object.keys(dic[0]);
+		for(let k of keys){
+			if(k == 'Total'){
+				flag = true;
+			}
+		}
+		if(flag){
+			let total = {};
+			for(let j = 0; j < this.numTeams; j++){
+				total['Category'] = 'Total'
+				total[this.teamIDs[j+1]] = dic[j]['Total'];
+			}
+			res.push(total);
+		}
+
+		// Create items array
+		var items = Object.keys(res[res.length - 1]).map(function(key) {
+			return [key, res[res.length - 1][key]];
+  		});
+  
+  		// Sort the array based on the second element
+  		items.sort(function(first, second) {
+			return second[1] - first[1];
+  		});
+
+		let final = {}
+		for(let i = 0; i < items.length; i++){
+			final[items[i][0].toString()] = items[i][1];
+		}
+		res[res.length - 1] = final
+
+		res.sort(function(first, second){
+			return first.Total - second.Total;
+		});
+		return res;
+	}
 
 	getAllRankings(){
 		let temp = [];
-		for(let i = 0; i < this.currentWeek - 1; i++){
+		for(let i of this.getWeeksPlayed()){
 			this.fillData(i);
 
 			let weekScores = this.getWeekStats(this.weekIds[0], this.weekIds[this.weekIds.length - 1]);
@@ -331,6 +412,25 @@ export class ScoreboardService {
 			sum += (count / (this.numTeams - 1));
 		}
 		return sum;
+	}
+
+	getWeeksPlayed(){
+		let count = 0;
+		let temp = [];
+		for(let i = 0; i < this.currentWeek; i++){
+			let flag = true;
+			for(let j = 0; j < (this.numTeams / 2); j++){
+				if(this.scoreboardItems['schedule'][count + j]['winner'] == 'UNDECIDED'){
+					flag = false;
+					break;
+				}
+			}
+			if(flag){
+				temp.push(i);
+			}
+			count += (this.numTeams / 2);
+		}
+		return temp;
 	}
 
 	getAllxWins(){
@@ -389,20 +489,24 @@ export class ScoreboardService {
 	getBubbleData(){
 		let ret = [];
 		let rankings = this.getAllRankings();
+		let week = this.getWeeksPlayed();
+
 		for(let i = 0; i < this.numTeams; i++){
 			let temp = {};
 			temp['name'] = this.teamIDs[i + 1];
 			temp['series'] = [];
-			for(let j = 0; j < this.currentWeek - 1; j++){
-				temp['series'][j] = {};
-				temp['series'][j]['name'] = "Week " + (j + 1);
-				temp['series'][j]['x'] = (j + 1);
-				temp['series'][j]['r'] = 2;
+			let count = 0;
+			for(let j of week){
+				temp['series'][count] = {};
+				temp['series'][count]['name'] = "Week " + (j + 1);
+				temp['series'][count]['x'] = (j + 1);
+				temp['series'][count]['r'] = 2;
 				for(let k = 0; k < this.numTeams; k++){
-					if(rankings[j][k]['TeamID'] == this.teamIDs[i + 1]){
-						temp['series'][j]['y'] = rankings[j][k]['Total'];
+					if(rankings[count][k]['TeamID'] == this.teamIDs[i + 1]){
+						temp['series'][count]['y'] = rankings[count][k]['Total'];
 					}
 				}
+				count ++;
 			}
 			ret.push(temp);
 		}
@@ -426,34 +530,41 @@ export class ScoreboardService {
 		let ret = [];
 		let rankings = this.getAllRankings();
 		let avg = this.getWeeklyAverages();
+		let week = this.getWeeksPlayed();
 
 		for(let i = 0; i < this.numTeams; i++){
 			let temp = {};
 			temp['name'] = this.teamIDs[i + 1];
 			temp['series'] = [];
-			for(let j = 0; j < this.currentWeek - 1; j++){
-				temp['series'][j] = {};
-				temp['series'][j]['name'] = "Week " + (j + 1);
-				temp['series'][j]['x'] = (j + 1);
-				temp['series'][j]['r'] = 2;
+			let count = 0;
+
+			for(let j of week){
+				temp['series'][count] = {};
+				temp['series'][count]['name'] = "Week " + (j + 1);
+				temp['series'][count]['x'] = (j + 1);
+				temp['series'][count]['r'] = 2;
 				for(let k = 0; k < this.numTeams; k++){
-					if(rankings[j][k]['TeamID'] == this.teamIDs[i + 1]){
-						temp['series'][j]['y'] = (rankings[j][k]['Total'] - avg[j]);
+					if(rankings[count][k]['TeamID'] == this.teamIDs[i + 1]){
+						temp['series'][count]['y'] = (rankings[count][k]['Total'] - avg[count]);
 					}
 				}
+				count ++;
 			}
 			ret.push(temp);
 		}
 		return ret;
 	}
 
-	getMinimum(data){
-		let min = data[0]['series'][0]['y'];
+	getMinimum(data, axis){
+		let min = data[0]['series'][0][axis];
+		let week = this.getWeeksPlayed();
 		for(let i = 0; i < this.numTeams; i++){
-			for(let j = 0; j < (this.currentWeek - 1); j++){
-				if(data[i]['series'][j]['y'] < min){
-					min = data[i]['series'][j]['y'];
+			let count = 0;
+			for(let j in week){
+				if(data[i]['series'][count][axis] < min){
+					min = data[i]['series'][count][axis];
 				}
+				count ++;
 			}
 		}
 		return min;
@@ -988,9 +1099,12 @@ export class ScoreboardService {
 			temp['Total'] = sum;
 			changed.push(temp);
 		}
+
+		/*
 		changed.sort(function(first, second){
 			return second.Total - first.Total;
 		});
+		*/
 
 		//Display the stats table in the same order as the ranks table
 		let t = [];
@@ -1035,7 +1149,9 @@ export class ScoreboardService {
 
 	getAverageByCategory(categoryName){
 		let list = [];
-		let rawScores = this.fullStatsToDisplay(this.getWeekStats(0, (((this.numTeams / 2) * (this.currentWeek - 1)) - 1)));
+		let week = this.getWeeksPlayed();
+		
+		let rawScores = this.fullStatsToDisplay(this.getWeekStats((week[0] * (this.numTeams / 2)), ((this.numTeams / 2) * (week[week.length - 1] + 1) - 1)));
 		let allScores = {};
 		for(let i = 0; i < this.currentWeek - 1; i++){
 			let temp = [];
@@ -1046,12 +1162,13 @@ export class ScoreboardService {
 			allScores[i] = temp;
 		}
   
-		for(let i = 0; i < this.currentWeek - 1; i++){
+		let count = 0;
+		for(let i of week){
 			let l = {}
 			l['name'] = "Week " + (i + 1);
 			let sum = 0;
 			for(let j = 0; j < this.numTeams; j++){
-				sum += allScores[i][j][categoryName];
+				sum += allScores[count][j][categoryName];
 			}
 			if(categoryName == 'ERA' || categoryName == 'WHIP' || categoryName == 'BA' || 
 			categoryName == 'OBP' || categoryName == 'OPS' || categoryName == 'SLG' || categoryName == 'FPCT'
@@ -1064,6 +1181,7 @@ export class ScoreboardService {
 				let x = sum / this.numTeams;
 				l['value'] = +Number(x).toFixed(0);
 			}
+			count ++;
 			list.push(l);
 		}
   
@@ -1076,7 +1194,8 @@ export class ScoreboardService {
 
   getStatsByCategory(categoryName, teamId){
 	  let list = [];
-	  let rawScores = this.fullStatsToDisplay(this.getWeekStats(0, (((this.numTeams / 2) * (this.currentWeek - 1)) - 1)));
+	  let week = this.getWeeksPlayed();
+	  let rawScores = this.fullStatsToDisplay(this.getWeekStats((week[0] * (this.numTeams / 2)), ((this.numTeams / 2) * (week[week.length - 1] + 1) - 1)));
 	  let allScores = {};
 	  
 	  for(let i = 0; i < this.currentWeek - 1; i++){
@@ -1089,7 +1208,8 @@ export class ScoreboardService {
 	  }
 
 	  let oppList: any[] = [];
-	  for(let i = 0; i < this.currentWeek - 1; i++){
+	  let count = 0;
+	  for(let i of week){
 		  let oppId: string;
 		  let l = {}
 		  let o ={};
@@ -1097,7 +1217,7 @@ export class ScoreboardService {
 		  l['name'] = "Week " + (i + 1);
 		  o['name'] = 'Week ' + (i + 1);
 		  for(let j = 0; j < this.numTeams; j++){
-			  if(allScores[i][j]['TeamID'] == this.teamIDs[teamId]){
+			  if(allScores[count][j]['TeamID'] == this.teamIDs[teamId]){
 				  let oppIndex = 0;
 				  if(j % 2 == 0){
 					oppIndex = j + 1;
@@ -1105,12 +1225,13 @@ export class ScoreboardService {
 				  else{
 					  oppIndex = j - 1;
 				  }
-				  l['value'] = allScores[i][j][categoryName];
-				  o['value'] = allScores[i][oppIndex][categoryName];
+				  l['value'] = allScores[count][j][categoryName];
+				  o['value'] = allScores[count][oppIndex][categoryName];
 			  }
 		  }
 		  list.push(l);
 		  oppList.push(o);
+		  count ++;
 	  }
 
 	  let formatted = {};
