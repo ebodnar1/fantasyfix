@@ -178,7 +178,22 @@
     <br>
     -->
 
-    <div class="container-fluid" *ngIf='weekPlayed'>
+    <br><hr><br>
+    
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col text-center align-self-center" [hidden]='!weekPlayed'>
+                <p style='display: inline;'>Sticky headers: </p>
+                <mat-button-toggle-group multiple [value]="['header']" #stickyHeaders = 'matButtonToggleGroup' class='sticky-toggle'>
+                    <mat-button-toggle value="header">
+                        Toggle
+                    </mat-button-toggle>
+                </mat-button-toggle-group>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid" *ngIf='weekPlayed && !overflow'>
         <br>
         <div class="row justify-content-center">
             <div class="col text-center align-self-center">
@@ -188,7 +203,7 @@
                 <!--Option: have teams along the x axis, categories along the y axis, use pagination-->
 
                 <table mat-table [dataSource]="displayWeekScores">
-                    <ng-container matColumnDef='TeamID'>
+                    <ng-container matColumnDef='TeamID' sticky>
                         <th mat-header-cell *matHeaderCellDef class='text-center'>ID</th>
                         <td mat-cell *matCellDef="let t"> {{t.TeamID}} </td>
                     </ng-container>
@@ -459,9 +474,28 @@
                         <td mat-cell *matCellDef="let t"> {{t.SVHD}} </td>
                     </ng-container>
 
-                    <tr mat-header-row *matHeaderRowDef='condensed'></tr>
+                    <tr mat-header-row *matHeaderRowDef="condensed; sticky: isSticky(stickyHeaders, 'header')"></tr>
                     <tr mat-row *matRowDef="let row; columns: condensed;"></tr>
                 </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid" *ngIf='weekPlayed && overflow'>
+        <br><br>
+        <div class="row justify-content-center">
+            <div class="col text-center align-self-center">
+                <table mat-table [dataSource]="displayOver" matSort>
+                    <ng-container [matColumnDef]='team' *ngFor='let team of dwCntrl'>
+                        <th mat-header-cell *matHeaderCellDef class='text-center'> {{team}} </th>
+                        <td mat-cell *matCellDef='let x' class='text-center'>{{x[team]}}</td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="dwCntrl; sticky: isSticky(stickyHeaders, 'header')" class='text-center'></tr>
+                    <tr mat-row *matRowDef="let row; columns: dwCntrl;" class='text-center'></tr>
+                </table>
+
+                <mat-paginator #paginator [length]="dwOverflow.length" [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
             </div>
         </div>
     </div>
@@ -474,7 +508,7 @@
             <div class="col text-center align-self-center">
                 <h3>Points</h3>
                 <table mat-table [dataSource]="otherData">
-                    <ng-container matColumnDef='TeamID'>
+                    <ng-container matColumnDef='TeamID' sticky>
                         <th mat-header-cell *matHeaderCellDef class='text-center'>ID</th>
                         <td mat-cell *matCellDef="let t"> {{t.TeamID}} </td>
                     </ng-container>
@@ -519,7 +553,7 @@
                         <th mat-header-cell *matHeaderCellDef class='text-center'>SV</th>
                         <td mat-cell *matCellDef="let t"> {{t.SV}} </td>
                     </ng-container>
-                    <ng-container matColumnDef='Total'>
+                    <ng-container matColumnDef='Total' sticky>
                         <th mat-header-cell *matHeaderCellDef class='text-center'>Total</th>
                         <td mat-cell *matCellDef="let t"> {{t.Total}} </td>
                     </ng-container>
@@ -745,15 +779,15 @@
                         <td mat-cell *matCellDef="let t"> {{t.SVHD}} </td>
                     </ng-container>
 
-                    <tr mat-header-row *matHeaderRowDef='pointsColumns'></tr>
+                    <tr mat-header-row *matHeaderRowDef="pointsColumns; sticky: isSticky(stickyHeaders, 'header')"></tr>
                     <tr mat-row *matRowDef="let row; columns: pointsColumns;"></tr>
                 </table>
             </div>
         </div>
-        <br>
+        <br><br>
     </div>
 
-    <div class="container-fluid" *ngIf='overflow'>
+    <div class="container-fluid" *ngIf='weekPlayed && overflow'>
         <br><br>
         <div class="row justify-content-center">
             <div class="col text-center align-self-center">
@@ -763,11 +797,14 @@
                         <td mat-cell *matCellDef='let x' class='text-center'>{{x[team]}}</td>
                     </ng-container>
 
-                    <tr mat-header-row *matHeaderRowDef='allTeams' class='text-center'></tr>
+                    <tr mat-header-row *matHeaderRowDef="allTeams; sticky: isSticky(stickyHeaders, 'header')" class='text-center'></tr>
                     <tr mat-row *matRowDef="let row; columns: allTeams;" class='text-center'></tr>
                 </table>
+
+                <mat-paginator #paginator1 [length]="rd.length" [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
             </div>
         </div>
+        <br><br>
     </div>
     <div class="container-fluid" *ngIf='!weekPlayed && selected'>
         <div class="row large-row justify-content-center">

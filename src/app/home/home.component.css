@@ -14,33 +14,29 @@ mat-header-cell, mat-cell, mat-header-row{
     justify-content: center;
     text-align: center;
 }
-.mat-column-TeamID{
-    border-right: 1px solid currentColor;
-    background-color: #5D5C61;
-    border-bottom: 0.75px solid currentColor;
-}
 mat-cell{
     font-size: 200px;
 }
-.mat-column-Total{
-    border-left: 0.1px dashed currentColor;
-}
 mat-label{
    visibility: visible;
+}
+.mat-row .mat-cell {
+    border-bottom: 1px solid #5D5C61;
+    border-top: 1px solid #5D5C61;
+    border-left: 1px solid #5D5C61;
+    border-right: 1px solid #5D5C61;
 }
 ::ng-deep th.mat-header-cell{
     width: 100px; 
     background-color: #5D5C61;
     border-left: 0.05px solid white;
     border-bottom: 1px solid white;
+    border-right: 0.05px solid white;
     font-size:  15px;
     font-weight: bold;
     color: white;
 }
 ::ng-deep td.mat-cell{
-    background-color: #2C3531;
-    border-left: 0.05px solid #5D5C61;
-    border-bottom: 0.05px solid #5D5C61;
     font-size: 12px;
     color: white;
 }
@@ -76,4 +72,22 @@ mat-label{
     background-color: #2C3531;
     color: blanchedalmond;
     border-color: #2C3531;
+}
+.mat-row:hover .mat-cell{
+    background-color: #5D5C61;
+    border-left-color: #2C3531;
+    border-right-color: #2C3531;
+    color: white;
+}
+.mat-table-sticky{
+    background-color: #aaaaaa;
+    color: rgb(61, 61, 61);
+    border: 1px solid #2C3531;
+}
+.mat-paginator{
+    background-color: #aaaaaa;
+    color: black
+}
+mat-button-toggle{
+    display: inline;
 }

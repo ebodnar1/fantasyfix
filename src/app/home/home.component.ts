@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Injectable, OnInit, NgModule, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, Injectable, OnInit, NgModule, ViewChild, AfterViewInit, ViewChildren, QueryList } from '@angular/core';
 import { waitForAsync } from '@angular/core/testing';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSort } from '@angular/material/sort';
@@ -9,6 +9,8 @@ import {Observable} from 'rxjs';
 import {map, timeout, tap, first} from 'rxjs/operators';
 import {ScoreboardService} from '../scoreboard.service';
 import {MatTableDataSource} from '@angular/material/table';
+import {MatPaginator} from '@angular/material/paginator';
+import { MatButtonToggleGroup } from '@angular/material/button-toggle';
 
 /*
 //Tracks historical data
@@ -128,6 +130,10 @@ export class HomeComponent implements OnInit {
    public otherCols = [];
    public overflow: boolean = false;
    public selected: boolean = false;
+   public dwOverflow = [];
+   public dwCntrl = [];
+   public displayOver;
+   public rd = [];
 
   async onSubmit() {
 	if (this.form.status == "VALID") {
@@ -178,6 +184,11 @@ export class HomeComponent implements OnInit {
 		}
 	}
 
+	isSticky(buttonToggleGroup: MatButtonToggleGroup, id: string){
+		return (buttonToggleGroup.value || []).indexOf(id) !== -1;
+	}
+
+	@ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
 	@ViewChild(MatTable) table: MatTable<any>;
 	onSelectClick(val){
 
@@ -191,8 +202,8 @@ export class HomeComponent implements OnInit {
 
 		for(let i = 0; i < this.scoreboard.numTeams; i++){
 			for(let j = 0; j < this.scoreboard.numTeams; j++){
-				if(this.weekPlayed && this.displayWeekScores[i]['TeamID'] == this.scoreboard.unorganized[j]['TeamID']){
-					this.displayWeekScores[i]['Total'] = this.scoreboard.unorganized[j]['Total'];
+				if(this.weekPlayed && this.displayWeekScores[i]['TeamID'] == this.scoreboard.rankedDisplay[j]['TeamID']){
+					this.displayWeekScores[i]['Total'] = this.scoreboard.rankedDisplay[j]['Total'];
 				}
 			}
 		}
@@ -201,19 +212,26 @@ export class HomeComponent implements OnInit {
 		});
 
 		if(this.overflow){
-			this.rankedDisplay = this.scoreboard.rankedDisplay;
-			this.allTeams = this.scoreboard.getTeamOrder(this.scoreboard.unorganized);
+			this.rd = this.scoreboard.unorganized
+			this.rankedDisplay = new MatTableDataSource<any>(this.rd);
+			this.allTeams = this.scoreboard.getTeamOrder(this.scoreboard.rankedDisplay);
+			this.dwOverflow = this.scoreboard.dwOverflow;
+
+			this.displayOver = new MatTableDataSource<any>(this.dwOverflow);
+			setTimeout(() => this.displayOver.paginator = this.paginator.toArray()[0]);
+
+			this.dwCntrl = this.scoreboard.getTeamOrder(this.scoreboard.rankedDisplay);
+			setTimeout(() => this.rankedDisplay.paginator = this.paginator.toArray()[1]);
 		}
 
 		if(!this.overflow){
 			this.pointsColumns = this.scoreboard.pointsColumns;
-			this.otherData = this.scoreboard.unorganized;
+			this.otherData = this.scoreboard.rankedDisplay;
 			this.otherData.sort(function(first, second){
 				return second.Total - first.Total;
 			});
 		}
 
-		console.log(this.weekPlayed);
 		this.selected = true;
 		this.table.renderRows();
 	}

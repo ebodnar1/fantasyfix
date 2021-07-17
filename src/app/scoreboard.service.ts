@@ -215,6 +215,7 @@ export class ScoreboardService {
 	public allTeams: any[];
 	public weeksPlayed: any[] = [];
 	public unorganized = [];
+	public dwOverflow = [];
 
 	fillStart(){
 		this.numTeams = this.scoreboardItems['teams'].length;
@@ -294,12 +295,14 @@ export class ScoreboardService {
 		}
 
 		this.displayWeekScores = this.fullStatsToDisplay(this.accumulatedWeekScores);
+
 		this.setupCondensedTable();
 
 		let ranked = this.getRankingsEachCategory(this.displayWeekScores);
-		this.unorganized = this.toOverallRankings(ranked);
+		this.rankedDisplay = this.toOverallRankings(ranked);
 		if(this.scoringCategories.length >= 12){
-			this.rankedDisplay = this.shiftData(this.unorganized);
+			this.unorganized = this.shiftData(this.rankedDisplay);
+			this.dwOverflow = this.shiftData(this.displayWeekScores);
 		}
 
 		this.setupPointsTable();
@@ -690,6 +693,9 @@ export class ScoreboardService {
 			else{
 				this.weekPlayed = true;
 			}
+		}
+		if((this.weekIds[0] / (this.numTeams / 2)) + 1 == this.currentWeek){
+			this.weekPlayed = true;
 		}
 		this.weekPlayed = this.weekPlayed || this.currentSelected;
 

@@ -25,7 +25,7 @@
             <div class="col text-center align-self-center">
                 <h3>Team Comparison</h3>
                 <table mat-table [dataSource]='teamStats'>
-                    <ng-container matColumnDef='TeamID'>
+                    <ng-container matColumnDef='TeamID' sticky>
                         <th mat-header-cell *matHeaderCellDef class='text-center'>ID</th>
                         <td mat-cell *matCellDef="let t"> {{t.TeamID}} </td>
                     </ng-container>
@@ -70,7 +70,7 @@
                         <th mat-header-cell *matHeaderCellDef class='text-center'>SV</th>
                         <td mat-cell *matCellDef="let t"> {{t.SV}} </td>
                     </ng-container>
-                    <ng-container matColumnDef='Total'>
+                    <ng-container matColumnDef='Total' sticky>
                         <th mat-header-cell *matHeaderCellDef class='text-center'>Total</th>
                         <td mat-cell *matCellDef="let t"> {{t.Total}} </td>
                     </ng-container>
@@ -341,13 +341,7 @@
        </div>
    </div>
 
-    <div class="container-fluid" *ngIf='showPieChart'>
-        <div class="row justify-content-center">
-            
-        </div>
-    </div>
-
-    <div class="container-fluid" *ngIf='showPieChart'>
+    <div class="container-fluid" *ngIf='chosen'>
         <hr>
         <br>
         <h3 class='text-center'>Trends</h3>
