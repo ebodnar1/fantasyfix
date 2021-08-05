@@ -2,13 +2,15 @@
 table{
     width: 100%;
     text-align: center !important;
-    background-color: #2C3531;
+    background-color: #FFFFFF;
     border: 0.3px solid currentColor;
+    overflow: scroll;
 }
 .small-table{
     width: 50%;
     justify-content: center;
     text-align: center !important;
+    overflow: scroll;
 }
 mat-header-cell, mat-cell, mat-header-row{
     justify-content: center;
@@ -21,24 +23,19 @@ mat-label{
    visibility: visible;
 }
 .mat-row .mat-cell {
-    border-bottom: 1px solid #5D5C61;
-    border-top: 1px solid #5D5C61;
-    border-left: 1px solid #5D5C61;
-    border-right: 1px solid #5D5C61;
+    border: 1px solid #2C3531;
 }
 ::ng-deep th.mat-header-cell{
     width: 100px; 
-    background-color: #5D5C61;
-    border-left: 0.05px solid white;
-    border-bottom: 1px solid white;
-    border-right: 0.05px solid white;
+    background-color: #86B3D1;
+    border: 1px solid #2C3531;
     font-size:  15px;
     font-weight: bold;
-    color: white;
+    color: rgb(61, 61, 61);
 }
 ::ng-deep td.mat-cell{
     font-size: 12px;
-    color: white;
+    color: rgb(61, 61, 61);
 }
 @media screen and (min-width: 350px){
     ::ng-deep th.mat-header-cell{
@@ -70,24 +67,25 @@ mat-label{
 }
 .submit{
     background-color: #2C3531;
-    color: blanchedalmond;
+    color: #F8F8FF;
     border-color: #2C3531;
 }
 .mat-row:hover .mat-cell{
-    background-color: #5D5C61;
-    border-left-color: #2C3531;
-    border-right-color: #2C3531;
-    color: white;
+    background-color: #86B3D1;
+    color: rgb(0, 0, 0);
 }
 .mat-table-sticky{
-    background-color: #aaaaaa;
-    color: rgb(61, 61, 61);
-    border: 1px solid #2C3531;
+    background-color: #4D6D9A;
+    color: #F8F8FF;
+    border-left: 1px solid #2C3531;
 }
 .mat-paginator{
-    background-color: #aaaaaa;
+    background-color: #4D6D9A;
     color: black
 }
 mat-button-toggle{
     display: inline;
+}
+.select{
+    background-color: #F8F8FF;
 }

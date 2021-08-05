@@ -12,7 +12,7 @@
                 <mat-form-field appearance='fill'>
                     <mat-label>Team</mat-label>
                     <mat-select [formControl]='allTeams' (selectionChange)='onSelectClick($event)'>
-                        <mat-option *ngFor='let team of allTeams' [value]='team'>{{team}}</mat-option>
+                        <mat-option *ngFor='let team of allTeams' [value]='team' class='select'>{{team}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
@@ -316,7 +316,7 @@
                     <!--FIX THIS LABEL-->
                     <mat-label>Week</mat-label>
                     <mat-select [formControl]='weeks' (selectionChange)='onWeekClick($event)'>
-                        <mat-option *ngFor='let week of weeks' [value]='week'>{{week}}</mat-option>
+                        <mat-option *ngFor='let week of weeks' [value]='week' class='select'>{{week}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
@@ -351,7 +351,7 @@
                 <mat-form-field appearance='fill'>
                     <mat-label>Category</mat-label>
                     <mat-select [formControl]='categoryNames' (selectionChange)='onCategoryClick($event)'>
-                        <mat-option *ngFor='let cat of categoryNames' [value]='cat'>{{cat}}</mat-option>
+                        <mat-option *ngFor='let cat of categoryNames' [value]='cat' class='select'>{{cat}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>

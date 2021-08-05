@@ -45,8 +45,8 @@ button {
 	margin-top: 10px;
 }
 button:hover:enabled{
-	color: white;
-	background-color: #05386B;
+	color: #F8F8FF;
+	background-color: #4D6D9A;
 }
 .coloured{
 	background-color: lightslategray;

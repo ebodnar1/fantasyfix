@@ -5,25 +5,24 @@
 table{
     width: 100%;
     text-align: center !important;
-    background-color: #2C3531;
+    background-color: #FFFFFF;
     border: 0.3px solid currentColor;
+    overflow: scroll;
 }
 .small-table{
     width: 50%;
     justify-content: center;
     text-align: center !important;
+    overflow: scroll;
 }
 mat-header-cell, mat-cell, mat-header-row{
     justify-content: center;
     text-align: center;
 }
 .mat-column-TeamID{
-    border-right: 1px solid currentColor;
-    background-color: #5D5C61;
-    border-bottom: 0.75px solid currentColor;
-}
-mat-cell{
-    font-size: 200px;
+    background-color: #4D6D9A;
+    border: 1px solid #2C3531;
+    color: #f8f8ff;
 }
 .mat-column-Total{
     border-left: 0.1px dashed currentColor;
@@ -34,19 +33,16 @@ mat-label{
 }
 ::ng-deep th.mat-header-cell{
     width: 100px; 
-    background-color: #5D5C61;
-    border-left: 0.05px solid white;
-    border-bottom: 1px solid white;
+    background-color: #86B3D1;
+    border: 1px solid #2C3531;
     font-size:  15px;
     font-weight: bold;
-    color: white;
+    color: rgb(61, 61, 61);
 }
 ::ng-deep td.mat-cell{
-    background-color: #2C3531;
-    border-left: 0.05px solid #5D5C61;
-    border-bottom: 0.05px solid #5D5C61;
     font-size: 12px;
-    color: white;
+    border: 1px solid #2C3531;
+    color: rgb(61, 61, 61);
 }
 @media screen and (min-width: 350px){
     ::ng-deep th.mat-header-cell{
@@ -78,7 +74,7 @@ mat-label{
 }
 .submit{
     background-color: #2C3531;
-    color: blanchedalmond;
+    color: #f8f8ff;
     border-color: #2C3531;
 }
 .pi-chart{

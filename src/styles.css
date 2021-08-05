@@ -33,11 +33,11 @@ h4{
 	font-weight: 400;
 }
 html{
-    background-color: blanchedalmond;
+    background-color: #F8F8FF;
 }
 .darken{
     background-color: #2C3531;
-    color: antiquewhite;
+    color: #F8F8FF;
 }
 form.contact {
 	display: flex;
@@ -54,14 +54,14 @@ button {
 button {
 	margin-top: 10px;
 	background-color: transparent;
-	color: antiquewhite;
-	border: 1px solid antiquewhite;
+	color: #F8F8FF;
+	border: 1px solid #F8F8FF;
 	padding: 4px 16px;
 	transition: 0.4s;
 	width: 100%;
 	margin-top: 10px;
 }
 button:hover:enabled{
-	color: black;
-	background-color: antiquewhite;
+	color: white;
+	background-color: #4D6D9A;
 }

@@ -11,8 +11,6 @@
                     Input your public league's ID and the year you want to view below to get the results. Can't find your league's ID? Click <a [routerLink]="'/info'">here</a> to see where
                     you can find it.
                     <br>
-                    <br>
-                    Our league ID: 250918111
                 </p>
             </div>
         </div>
@@ -67,7 +65,7 @@
                 <mat-form-field appearance='fill'>
                     <mat-label>Week</mat-label>
                     <mat-select [formControl]='allWeeks' (selectionChange)='onSelectClick($event)' [(value)]='currentWeek'>
-                        <mat-option *ngFor='let week of allWeeks' [value]='week'>{{week}}</mat-option>
+                        <mat-option *ngFor='let week of allWeeks' [value]='week' class='select'>{{week}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
@@ -182,7 +180,7 @@
     
     <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="col text-center align-self-center" [hidden]='!weekPlayed'>
+            <div class="col text-center align-self-center" [hidden]='!weekPlayed || !selected'>
                 <p style='display: inline;'>Sticky headers: </p>
                 <mat-button-toggle-group multiple [value]="['header']" #stickyHeaders = 'matButtonToggleGroup' class='sticky-toggle'>
                     <mat-button-toggle value="header">
@@ -193,7 +191,7 @@
         </div>
     </div>
 
-    <div class="container-fluid" *ngIf='weekPlayed && !overflow'>
+    <div class="container-fluid" *ngIf='weekPlayed && !overflow && selected'>
         <br>
         <div class="row justify-content-center">
             <div class="col text-center align-self-center">
@@ -481,7 +479,7 @@
         </div>
     </div>
 
-    <div class="container-fluid" *ngIf='weekPlayed && overflow'>
+    <div class="container-fluid" *ngIf='weekPlayed && overflow && selected'>
         <br><br>
         <div class="row justify-content-center">
             <div class="col text-center align-self-center">
@@ -501,7 +499,7 @@
     </div>
 
 
-    <div class="container-fluid" *ngIf='weekPlayed && !overflow'>
+    <div class="container-fluid" *ngIf='weekPlayed && !overflow && selected'>
         <br>
         <br>
         <div class="row justify-content-center">
@@ -787,7 +785,7 @@
         <br><br>
     </div>
 
-    <div class="container-fluid" *ngIf='weekPlayed && overflow'>
+    <div class="container-fluid" *ngIf='weekPlayed && overflow && selected'>
         <br><br>
         <div class="row justify-content-center">
             <div class="col text-center align-self-center">

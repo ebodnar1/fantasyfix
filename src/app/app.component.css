@@ -1,8 +1,8 @@
 .head{
-    background-color: #2C3531;
+    background-color: #4D6D9A;
     padding: 3vmin 0 3vmin 0;
     width: 100%;
-    color: blanchedalmond;
+    color: #F8F8FF;
     font-family: "Open Sans", Roboto, "Helvetica Neue", sans-serif;
 }
 .button{
@@ -23,15 +23,13 @@
     font-family: "Catamaran", Roboto, "Helvetica Neue", sans-serif;
 }
 .navbar-nav > li > a:hover, .navbar-nav > li > a:focus {
-    color: #557A95;
-    text-decoration: underline solid #557A95;
+    color: #2C3531;
 }
 .navbar > a:hover, .navbar > a:focus {
-    color: #557A95;
-    text-decoration: underline solid #557A95;
+    color: #2C3531;
 }
 .head a{
-    color: white;
+    color: #F8F8FF;
 }
 nav ul {
     margin : 0;
@@ -49,5 +47,5 @@ nav a{
     padding-left: 20px;
 }
 .navbar-nav .current, .navbar .current{
-    color: blanchedalmond;
+    color: #F8F8FF;
 }

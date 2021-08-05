@@ -137,6 +137,8 @@ export class HomeComponent implements OnInit {
 
   async onSubmit() {
 	if (this.form.status == "VALID") {
+		this.filled = false;
+		this.selected = false;
 		this.form.disable(); // disable the form if it's valid to disable multiple submissions
 		var formData: any = new FormData();
 		formData.append("id", this.form.get("id").value);
@@ -191,7 +193,6 @@ export class HomeComponent implements OnInit {
 	@ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
 	@ViewChild(MatTable) table: MatTable<any>;
 	onSelectClick(val){
-
 		this.overflow = this.scoreboard.scoringCategories.length >= 12 ? true : false;
 
 		//this.allTeams = this.scoreboard.teamIDs;
