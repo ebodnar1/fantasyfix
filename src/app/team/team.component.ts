@@ -70,9 +70,14 @@ export class TeamComponent implements AfterViewInit, OnChanges, OnInit {
     for(let i = 0; i < this.scoreboard.allWeeks.length; i++){
       this.weeks[i] = this.scoreboard.allWeeks[i];
     }
+
+    //Implement this Average aspect!
+    /*
     if(this.weeks.length && this.weeks[this.weeks.length - 1] != 'Average'){
       this.weeks.push('Average')
     }
+    */
+
     this.currentWeek = this.scoreboard.currentWeek;
     this.selectedWeek = this.currentWeek;
     this.scoreboard.setCurrentSelected(false);
@@ -128,7 +133,7 @@ export class TeamComponent implements AfterViewInit, OnChanges, OnInit {
     this.selectedWeek = this.scoreboard.convertWeek(val.value);
     this.scoreboard.currentSelected = this.currentWeek == this.selectedWeek + 1;
     this.scoreboard.getWeekSelected(this.selectedWeek);
-    
+
     if(this.selectedWeek < this.currentWeek){
       this.teamStats.push(this.scoreboard.getStatsForTeam(this.selected, this.selectedWeek));
       let avg = this.scoreboard.getAverage(this.selectedWeek);

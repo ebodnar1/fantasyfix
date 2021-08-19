@@ -249,15 +249,39 @@ export class ScoreboardService {
 
 		let scores = [];
 		//Get cumulativeScores
-		this.scoreboardItems['schedule'].map(data => this.cumulativeScores.push(data["home"]['cumulativeScore'], data["away"]['cumulativeScore']));
-		this.matchupItems['schedule'].map(data => scores.push(data['home']['cumulativeScore'], data['away']['cumulativeScore']));
+		this.scoreboardItems['schedule'].map(data => {
+			if(data["home"] != undefined){
+				this.cumulativeScores.push(data["home"]['cumulativeScore']);
+			}
+			if(data["away"] != undefined){
+				this.cumulativeScores.push(data["away"]['cumulativeScore']);
+			}
+			//this.cumulativeScores.push(data["home"]['cumulativeScore'], data["away"]['cumulativeScore'])
+		});
+		this.matchupItems['schedule'].map(data => {
+			if(data['home'] != undefined){
+				scores.push(data['home']['cumulativeScore']);
+			}
+			if(data['away'] != undefined){
+				scores.push(data['away']['cumulativeScore'])
+			}
+			//scores.push(data['home']['cumulativeScore'], data['away']['cumulativeScore'])
+		});
 
 		//Get scoresByStat
 		for(let i = 0; i < (week * (this.numTeams / 2)); i++){
 			this.scoresByStat.push(this.cumulativeScores[i]['scoreByStat']);
 		}
 		//this.cumulativeScores.map(data => console.log(data['scoreByStat']));//this.scoresByStat.push(data['scoreByStat']));
-		this.scoreboardItems['schedule'].map(data => this.teamsForGames.push(data["home"]['teamId'], data["away"]['teamId']))
+		this.scoreboardItems['schedule'].map(data => {
+			if(data["home"] != undefined){
+				this.teamsForGames.push(data["home"]['teamId']);
+			}
+			if(data["away"] != undefined){
+				this.teamsForGames.push(data["away"]['teamId']);
+			}
+			//this.teamsForGames.push(data["home"]['teamId'], data["away"]['teamId'])
+		});
 
 		let count = 0;
 		for(let i = 0; i < this.currentWeek - 1; i++){
@@ -863,6 +887,7 @@ export class ScoreboardService {
         		temp[this.categoryNames[i.categoryNum]] = Math.round(temp[this.categoryNames[i.categoryNum]] / this.numTeams);
       		}
     	}
+		console.log(temp);
     	return temp;
 	}
   }
